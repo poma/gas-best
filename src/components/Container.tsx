@@ -25,29 +25,17 @@ const Title = styled.h1`
 
 const Nav = styled.nav``;
 
-const Button = styled.button`
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  margin: 0;
-  margin-left: 10px;
-  vertical-align: middle;
-  background: none no-repeat center;
-  background-image: url("/icons/${(props) => props.name}.svg");
-  background-size: 16px;
-  border: none;
-  cursor: pointer;
-`;
+interface ContainerProps {
+  title: string;
+  nav: React.ReactNode;
+}
 
-const Container: React.FC = ({ children }) => {
+const Container: React.FC<ContainerProps> = ({ children, title, nav }) => {
   return (
     <Wrapper>
       <Header>
-        <Title>Recommended gas prices</Title>
-        <Nav>
-          <Button name="paste" title="one" />
-          <Button name="notification" title="two" />
-        </Nav>
+        <Title>{title}</Title>
+        <Nav>{nav}</Nav>
       </Header>
       {children}
     </Wrapper>

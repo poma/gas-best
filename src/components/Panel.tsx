@@ -1,9 +1,19 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const Panel = styled.div`
+const Panel = styled.div<{ hoverable?: boolean }>`
   background-color: ${(props) => props.theme.bg.panel};
+  border: 1px solid ${(props) => props.theme.bg.panel};
   border-radius: 6px;
   padding: 8px;
+
+  ${(props) =>
+    props.hoverable &&
+    css`
+      &: hover {
+        border-color: ${(props) => props.theme.fg.primary};
+        cursor: pointer;
+      }
+    `}
 `;
 
 export default Panel;
