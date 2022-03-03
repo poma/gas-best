@@ -8,9 +8,13 @@ const theme = {
     secondary: "#ffffff",
   },
   bg: {
-    container: "#171821",
-    panel: "#21222D",
+    primary: "#21222D",
+    secondary: "#171821",
     tooltip: "#323444",
+  },
+  accent: {
+    primary: "#20FFE2",
+    secondary: "#00B2FF",
   },
 };
 

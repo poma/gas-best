@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Panel from "~/components/Panel";
 import Text from "~/components/Text";
@@ -10,22 +10,66 @@ interface GasPriceHistoryPanelProps {
 const GasPriceHistoryLabel = styled(Text)`
   display: block;
   width: 100%;
-  padding-bottom: 9px;
 `;
 
-const Header = styled.header``;
-const ChartSelect = styled.nav``;
+const Header = styled.header`
+  display: flex;
+  padding-bottom: 16px;
+  align-items: center;
+`;
+const DurationToolbar = styled.nav`
+  flex: 1 0 auto;
+`;
+const DurationButton = styled.button<{ selected: boolean }>`
+  padding: 4px 8px;
+  margin: 0;
+  margin-left: 8px;
+  font-size: 8px;
+  font-weight: 600;
+  color: ${(props) =>
+    props.selected ? props.theme.bg.secondary : props.theme.fg.primary};
+  background: ${(props) =>
+    props.selected ? props.theme.accent.primary : props.theme.bg.secondary};
+  vertical-align: middle;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+`;
+
+type Duration = "1d" | "1w" | "1m";
 
 const GasPriceHistoryPanel: React.FC<GasPriceHistoryPanelProps> = ({
   value,
-}) => (
-  <Panel>
-    <Header>
-      <GasPriceHistoryLabel>Gas price history</GasPriceHistoryLabel>
-      <ChartSelect></ChartSelect>
-    </Header>
-    Chart
-  </Panel>
-);
+}) => {
+  const [duration, setDuration] = useState<Duration>("1d");
+  return (
+    <Panel>
+      <Header>
+        <GasPriceHistoryLabel>Gas price history</GasPriceHistoryLabel>
+        <DurationToolbar>
+          <DurationButton
+            selected={duration === "1d"}
+            onClick={() => setDuration("1d")}
+          >
+            1D
+          </DurationButton>
+          <DurationButton
+            selected={duration === "1w"}
+            onClick={() => setDuration("1w")}
+          >
+            1W
+          </DurationButton>
+          <DurationButton
+            selected={duration === "1m"}
+            onClick={() => setDuration("1m")}
+          >
+            1M
+          </DurationButton>
+        </DurationToolbar>
+      </Header>
+      Chart
+    </Panel>
+  );
+};
 
 export default GasPriceHistoryPanel;

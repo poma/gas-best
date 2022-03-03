@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
 
 const Panel = styled.div<{ hoverable?: boolean }>`
-  background-color: ${(props) => props.theme.bg.panel};
-  border: 1px solid ${(props) => props.theme.bg.panel};
+  background-color: ${(props) => props.theme.bg.primary};
+  border: 1px solid ${(props) => props.theme.bg.primary};
   border-radius: 6px;
   padding: 8px;
 

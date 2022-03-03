@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   max-width: 420px;
-  background-color: ${(props) => props.theme.bg.container};
+  background-color: ${(props) => props.theme.bg.secondary};
   border-radius: 24px;
   padding: 20px 24px 24px;
   margin: 50px auto;
