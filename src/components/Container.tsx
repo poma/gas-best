@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -21,6 +20,7 @@ const Title = styled.h1`
   font-size: 14px;
   font-weight: 600;
   margin: 0;
+  user-select: none;
 `;
 
 const Nav = styled.nav``;

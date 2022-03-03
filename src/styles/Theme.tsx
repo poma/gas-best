@@ -10,13 +10,19 @@ const theme = {
   bg: {
     primary: "#21222D",
     secondary: "#171821",
-    tooltip: "#323444",
+    tertiary: "#323444",
   },
   accent: {
     primary: "#20FFE2",
     secondary: "#00B2FF",
   },
 };
+
+type CustomTheme = typeof theme;
+
+declare module "styled-components" {
+  export interface DefaultTheme extends CustomTheme {}
+}
 
 const Theme: React.FC = ({ children }) => (
   <ThemeProvider theme={theme}>{children}</ThemeProvider>

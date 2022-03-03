@@ -4,7 +4,7 @@ import Text from "../Text";
 const Wrapper = styled.div`
   position: absolute;
   padding: 6px 8px;
-  background: ${(props) => props.theme.bg.tooltip};
+  background: ${(props) => props.theme.bg.tertiary};
   border-radius: 6px;
   text-align: left;
   white-space: nowrap;

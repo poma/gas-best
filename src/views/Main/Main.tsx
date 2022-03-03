@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import Info from "~/components/Info";
 import BaseFeePanel from "./components/BaseFeePanel";
