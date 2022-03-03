@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { hoverableIcon } from "~/styles/utils";
+import Tooltip from "../Tooltip";
 import { ReactComponent as InfoSVG } from "./assets/info.svg";
 
 const InfoIcon = styled(InfoSVG)`
@@ -8,8 +9,14 @@ const InfoIcon = styled(InfoSVG)`
   height: 12px;
 `;
 
+const InfoTooltip = styled(Tooltip)<{ show: boolean }>`
+  top: 100%;
+  left: -1px;
+  margin-top: 10px;
+  visibility: ${(props) => (props.show ? "visible" : "hidden")};
+`;
+
 const IconContainer = styled.span`
-  position: relative;
   display: inline-block;
   width: 12px;
   height: 12px;
@@ -19,10 +26,35 @@ const IconContainer = styled.span`
   ${hoverableIcon}
 `;
 
-const Info: React.FC = ({ children }) => (
-  <IconContainer>
-    <InfoIcon />
-  </IconContainer>
-);
+interface InfoProps {
+  onShowTooltip?: () => void;
+  onHideTooltip?: () => void;
+}
+
+const Info: React.FC<InfoProps> = ({
+  children,
+  onShowTooltip,
+  onHideTooltip,
+  ...props
+}) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+  return (
+    <IconContainer
+      className="info-tooltip"
+      {...props}
+      onMouseEnter={() => {
+        onShowTooltip?.();
+        setShowTooltip(true);
+      }}
+      onMouseLeave={() => {
+        onHideTooltip?.();
+        setShowTooltip(false);
+      }}
+    >
+      <InfoIcon />
+      <InfoTooltip show={showTooltip}>{children}</InfoTooltip>
+    </IconContainer>
+  );
+};
 
 export default Info;

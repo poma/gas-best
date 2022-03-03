@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Info from "~/components/Info";
 import BaseFeePanel from "./components/BaseFeePanel";
@@ -26,6 +26,7 @@ const Middle = styled.div`
 const Bottom = styled.div``;
 
 function Main() {
+  const [hidePanelTooltips, setHidePanelTooltips] = useState(false);
   return (
     <Body>
       <Top>
@@ -33,13 +34,20 @@ function Main() {
           value={10}
           label={
             <span>
-              Base fee <Info />
+              {"Base fee "}
+              <Info
+                onShowTooltip={() => setHidePanelTooltips(true)}
+                onHideTooltip={() => setHidePanelTooltips(false)}
+              >
+                <p>Static tooltip</p>
+              </Info>
             </span>
           }
+          hideTooltip={hidePanelTooltips}
         />
-        <FeePanel value={20} label="<15 min" />
-        <FeePanel value={30} label="<1 hour" />
-        <FeePanel value={40} label="<1 day" />
+        <FeePanel value={20} label="<15 min" hideTooltip={hidePanelTooltips} />
+        <FeePanel value={30} label="<1 hour" hideTooltip={hidePanelTooltips} />
+        <FeePanel value={40} label="<1 day" hideTooltip={hidePanelTooltips} />
       </Top>
       <Middle>
         <LastBlockPanel value={14235400} timeSinceLastBlock={15} />

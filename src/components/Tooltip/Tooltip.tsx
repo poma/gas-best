@@ -6,6 +6,7 @@ const Wrapper = styled.div`
   padding: 6px 8px;
   background: ${(props) => props.theme.bg.tooltip};
   border-radius: 6px;
+  text-align: left;
   white-space: nowrap;
   z-index: 10;
 
@@ -20,13 +21,13 @@ const Title = styled(Text)`
 `;
 
 interface TooltipProps {
-  title: string;
+  title?: string;
   className?: string | undefined;
 }
 
 const Tooltip: React.FC<TooltipProps> = ({ children, className, title }) => (
   <Wrapper className={className}>
-    <Title>{title}</Title>
+    {title && <Title>{title}</Title>}
     {children}
   </Wrapper>
 );

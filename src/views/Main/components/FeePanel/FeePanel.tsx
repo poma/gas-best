@@ -1,5 +1,5 @@
-import React from "react";
-import styled, { css } from "styled-components";
+import React, { useState } from "react";
+import styled from "styled-components";
 import Panel from "~/components/Panel";
 import Stats from "~/components/Stats";
 import Text from "~/components/Text";
@@ -18,12 +18,12 @@ const FeeLabel = styled(Text)`
   margin-bottom: -3px;
 `;
 
-const FeeTooltip = styled(Tooltip)`
+const FeeTooltip = styled(Tooltip)<{ show: boolean }>`
   position: absolute;
   top: 100%;
   left: -1px;
   margin-top: 10px;
-  visibility: hidden;
+  visibility: ${(props) => (props.show ? "visible" : "hidden")};
 `;
 
 interface FeeTooltipContentProps {
@@ -50,9 +50,6 @@ const HoverablePanel = styled(Panel)`
   &:hover {
     border-color: ${(props) => props.theme.fg.primary};
     cursor: pointer;
-    ${FeeTooltip} {
-      visibility: visible;
-    }
   }
 
   &:last-child ${FeeTooltip} {
@@ -64,16 +61,32 @@ const HoverablePanel = styled(Panel)`
 interface FeePanelProps {
   value: number;
   label: React.ReactNode;
+  hideTooltip: boolean;
 }
 
-const FeePanel: React.FC<FeePanelProps> = ({ value, label, ...props }) => (
-  <HoverablePanel {...props}>
-    <FeeStats>{value}</FeeStats>
-    <FeeLabel>{label}</FeeLabel>
-    <FeeTooltip title="Approximate tx cost">
-      <FeeTooltipContent eth={10} erc20={18} dex={67} />
-    </FeeTooltip>
-  </HoverablePanel>
-);
+const FeePanel: React.FC<FeePanelProps> = ({
+  value,
+  label,
+  hideTooltip,
+  ...props
+}) => {
+  const [showTooltip, setShowTooltip] = useState(false);
+  return (
+    <HoverablePanel
+      {...props}
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
+    >
+      <FeeStats>{value}</FeeStats>
+      <FeeLabel>{label}</FeeLabel>
+      <FeeTooltip
+        title="Approximate tx cost"
+        show={showTooltip && !hideTooltip}
+      >
+        <FeeTooltipContent eth={10} erc20={18} dex={67} />
+      </FeeTooltip>
+    </HoverablePanel>
+  );
+};
 
 export default FeePanel;
