@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -55,6 +55,18 @@ interface BaseFeeChartProps {
 const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
   const theme = useTheme();
   const [selectedCell, setSelectedCell] = useState(-1);
+  const [previousCell, setPreviousCell] = useState(-1);
+
+  const updateSelectedCell = useCallback(
+    (index: number) => {
+      if (index !== selectedCell) {
+        setPreviousCell(selectedCell);
+        setSelectedCell(index);
+      }
+    },
+    [selectedCell, previousCell]
+  );
+
   return (
     <ResponsiveContainer width="100%" height={26}>
       <BarChart
@@ -63,12 +75,12 @@ const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
         data={data}
         onMouseMove={(data, _event) => {
           if (data?.activeTooltipIndex !== undefined) {
-            setSelectedCell(data.activeTooltipIndex);
+            updateSelectedCell(data.activeTooltipIndex);
           } else {
-            setSelectedCell(-1);
+            updateSelectedCell(-1);
           }
         }}
-        onMouseLeave={() => setSelectedCell(-1)}
+        onMouseLeave={() => updateSelectedCell(-1)}
         margin={{
           top: 0,
           right: 0,
@@ -86,7 +98,12 @@ const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
                   ? theme.accent.primary
                   : theme.bg.tertiary
               }
-              onMouseEnter={() => setSelectedCell(index)}
+              style={{
+                transition:
+                  selectedCell < 0 || previousCell < 0
+                    ? "fill 200ms ease"
+                    : "none",
+              }}
             />
           ))}
         </Bar>
