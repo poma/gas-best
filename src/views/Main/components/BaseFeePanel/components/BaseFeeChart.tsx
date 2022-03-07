@@ -4,46 +4,12 @@ import {
   BarChart,
   Cell,
   ResponsiveContainer,
-  Tooltip as ChartTooltip,
+  Tooltip as RechartsTooltip,
 } from "recharts";
-import styled, { useTheme } from "styled-components";
-import Tooltip from "~/components/Tooltip";
+import { useTheme } from "styled-components";
+import { ChartTooltip } from "~/components/ChartTooltip";
 
-const CustomTooltip = styled(Tooltip)<{ show: boolean }>`
-  position: relative;
-  visibility: ${(props) => (props.show ? "visible" : "hidden")};
-  p:before {
-    content: "";
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    margin-right: 4px;
-    margin-bottom: 1px;
-    background: ${(props) => props.theme.accent.primary};
-    border-radius: 50%;
-  }
-`;
-
-interface TooltipProps {
-  active?: boolean;
-  payload?: any;
-}
-
-const renderTooltip = ({ active, payload }: TooltipProps) => {
-  if (active && payload && payload.length) {
-    const value = payload[0].payload.fee;
-    const date = payload[0].payload.date;
-    return (
-      <CustomTooltip title={date} show>
-        <p>{`Base fee: ${value}`}</p>
-      </CustomTooltip>
-    );
-  }
-
-  return null;
-};
-
-interface ChartDataEntry {
+export interface ChartDataEntry {
   date: string;
   fee: number;
 }
@@ -87,8 +53,9 @@ const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
           left: 0,
           bottom: 0,
         }}
+        barSize={2}
       >
-        <Bar dataKey="fee" fill={theme.accent.primary}>
+        <Bar dataKey="fee" name="Base fee" fill={theme.accent.primary}>
           {data.map((_entry, index) => (
             <Cell
               key={`cell-${index}`}
@@ -107,10 +74,16 @@ const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
             />
           ))}
         </Bar>
-        <ChartTooltip
+        <RechartsTooltip
           cursor={false}
           allowEscapeViewBox={{ y: true }}
-          content={renderTooltip}
+          content={({ active, payload }) => (
+            <ChartTooltip
+              active={active}
+              payload={payload}
+              titleFormatter={(payload: any) => payload.date}
+            />
+          )}
         />
       </BarChart>
     </ResponsiveContainer>

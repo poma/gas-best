@@ -2,6 +2,25 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Panel from "~/components/Panel";
 import Text from "~/components/Text";
+import formatDateTime from "~/utils/formatDateTime";
+import GasPriceHistoryChart, {
+  ChartDataEntry,
+} from "./components/GasPriceHistoryChart";
+
+type Duration = "1d" | "1w" | "1m";
+
+const data = {
+  start: 1645921200,
+  tick: 600000,
+  min: [36, 24, 21, 18, 19],
+  avg: [42, 35, 27, 24, 24],
+};
+
+const historyData: ChartDataEntry[] = data.min.map((_, index) => ({
+  date: formatDateTime(data.start + data.tick * index),
+  min: data.min[index],
+  avg: data.avg[index],
+}));
 
 interface GasPriceHistoryPanelProps {
   value: number;
@@ -36,8 +55,6 @@ const DurationButton = styled.button<{ selected: boolean }>`
   cursor: pointer;
 `;
 
-type Duration = "1d" | "1w" | "1m";
-
 const GasPriceHistoryPanel: React.FC<GasPriceHistoryPanelProps> = ({
   value,
 }) => {
@@ -67,7 +84,7 @@ const GasPriceHistoryPanel: React.FC<GasPriceHistoryPanelProps> = ({
           </DurationButton>
         </DurationToolbar>
       </Header>
-      Chart
+      <GasPriceHistoryChart data={historyData} />
     </Panel>
   );
 };

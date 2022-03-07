@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import styled from "styled-components";
 import Text from "../Text";
 
@@ -21,8 +22,8 @@ const Title = styled(Text)`
 `;
 
 interface TooltipProps {
-  title?: string;
-  className?: string | undefined;
+  title?: ReactNode;
+  className?: string;
 }
 
 const Tooltip: React.FC<TooltipProps> = ({ children, className, title }) => (

@@ -2,7 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Panel from "~/components/Panel";
 import Text from "~/components/Text";
-import BaseFeeChart from "./components/BaseFeeChart";
+import formatDateTime from "~/utils/formatDateTime";
+import BaseFeeChart, { ChartDataEntry } from "./components/BaseFeeChart";
 
 const BaseFeeLabel = styled(Text)`
   display: block;
@@ -57,24 +58,8 @@ const data = {
   forecast: { "15 min": 11, "1 hour": 12, "1 day": 13 },
 };
 
-const formatTimestamp = (timestamp: number): string => {
-  const date = new Date(timestamp * 1000);
-  const localeDate = date.toLocaleDateString("fr-CA", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-  const localeTime = date.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-
-  return `${localeDate} ${localeTime}`;
-};
-
-const baseFeeData = data.recent.map((item) => ({
-  date: formatTimestamp(item[0]),
+const baseFeeData: ChartDataEntry[] = data.recent.map((item) => ({
+  date: formatDateTime(item[0]),
   fee: item[1],
 }));
 
