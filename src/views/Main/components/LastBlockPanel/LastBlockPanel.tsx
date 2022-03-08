@@ -5,8 +5,8 @@ import Stats from "~/components/Stats";
 import Text from "~/components/Text";
 
 interface LastBlockPanelProps {
-  value: number;
-  timeSinceLastBlock: number;
+  value?: number;
+  timeSinceLastBlock?: string;
 }
 
 const LastBlockLabel = styled(Text)`

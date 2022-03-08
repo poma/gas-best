@@ -6,15 +6,10 @@ import {
 } from "recharts";
 import { useTheme } from "styled-components";
 import { ChartTooltip } from "~/components/ChartTooltip";
-
-export interface ChartDataEntry {
-  date: string;
-  min: number;
-  avg: number;
-}
+import { GasPriceHistoryChartDataEntry } from "~/types";
 
 interface GasPriceHistoryChartProps {
-  data: ChartDataEntry[];
+  data: GasPriceHistoryChartDataEntry[];
 }
 
 const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({

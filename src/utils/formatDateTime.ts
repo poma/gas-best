@@ -1,4 +1,4 @@
-const formatDateTime = (timestamp: number): string => {
+function formatDateTime(timestamp: number): string {
   const date = new Date(timestamp * 1000);
   const localeDate = date.toLocaleDateString("fr-CA", {
     year: "numeric",
@@ -12,6 +12,6 @@ const formatDateTime = (timestamp: number): string => {
   });
 
   return `${localeDate} ${localeTime}`;
-};
+}
 
 export default formatDateTime;

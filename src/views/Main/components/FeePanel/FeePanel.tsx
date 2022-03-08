@@ -59,7 +59,7 @@ const HoverablePanel = styled(Panel)`
 `;
 
 interface FeePanelProps {
-  value: number;
+  value?: number;
   label: React.ReactNode;
   hideTooltip: boolean;
 }

@@ -1,6 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Info from "~/components/Info";
+import useBaseFee from "~/hooks/useBaseFee";
+import useFeeStats from "~/hooks/useFeeStats";
+import formatTimeDuration from "~/utils/formatTimeDuration";
 import BaseFeePanel from "./components/BaseFeePanel";
 import FeePanel from "./components/FeePanel";
 import GasPriceHistoryPanel from "./components/GasPriceHistoryPanel";
@@ -26,12 +29,15 @@ const Middle = styled.div`
 const Bottom = styled.div``;
 
 function Main() {
+  const { data: baseFee, error: baseFeeError } = useBaseFee();
+  const { data: feeStats, error: feeStatsError } = useFeeStats();
+
   const [hidePanelTooltips, setHidePanelTooltips] = useState(false);
   return (
     <Body>
       <Top>
         <FeePanel
-          value={10}
+          value={baseFee}
           label={
             <span>
               {"Base fee "}
@@ -45,16 +51,34 @@ function Main() {
           }
           hideTooltip={hidePanelTooltips}
         />
-        <FeePanel value={20} label="<15 min" hideTooltip={hidePanelTooltips} />
-        <FeePanel value={30} label="<1 hour" hideTooltip={hidePanelTooltips} />
-        <FeePanel value={40} label="<1 day" hideTooltip={hidePanelTooltips} />
+        <FeePanel
+          value={feeStats?.forecast["15 min"]}
+          label="<15 min"
+          hideTooltip={hidePanelTooltips}
+        />
+        <FeePanel
+          value={feeStats?.forecast["1 hour"]}
+          label="<1 hour"
+          hideTooltip={hidePanelTooltips}
+        />
+        <FeePanel
+          value={feeStats?.forecast["1 day"]}
+          label="<1 day"
+          hideTooltip={hidePanelTooltips}
+        />
       </Top>
       <Middle>
-        <LastBlockPanel value={14235400} timeSinceLastBlock={15} />
-        <BaseFeePanel value={123} />
+        <LastBlockPanel
+          value={feeStats?.last.number}
+          timeSinceLastBlock={
+            feeStats &&
+            formatTimeDuration(Date.now() - feeStats.last.timestamp * 1000)
+          }
+        />
+        <BaseFeePanel data={feeStats?.recent} />
       </Middle>
       <Bottom>
-        <GasPriceHistoryPanel value={123} />
+        <GasPriceHistoryPanel />
       </Bottom>
     </Body>
   );

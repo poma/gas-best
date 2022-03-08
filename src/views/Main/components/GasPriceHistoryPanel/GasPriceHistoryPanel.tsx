@@ -2,29 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Panel from "~/components/Panel";
 import Text from "~/components/Text";
-import formatDateTime from "~/utils/formatDateTime";
-import GasPriceHistoryChart, {
-  ChartDataEntry,
-} from "./components/GasPriceHistoryChart";
-
-type Duration = "1d" | "1w" | "1m";
-
-const data = {
-  start: 1645921200,
-  tick: 600000,
-  min: [36, 24, 21, 18, 19],
-  avg: [42, 35, 27, 24, 24],
-};
-
-const historyData: ChartDataEntry[] = data.min.map((_, index) => ({
-  date: formatDateTime(data.start + data.tick * index),
-  min: data.min[index],
-  avg: data.avg[index],
-}));
-
-interface GasPriceHistoryPanelProps {
-  value: number;
-}
+import useGasPriceHistory from "~/hooks/useGasPriceHistory";
+import { ChartDuration } from "~/types";
+import GasPriceHistoryChart from "./components/GasPriceHistoryChart";
 
 const GasPriceHistoryLabel = styled(Text)`
   display: block;
@@ -36,9 +16,11 @@ const Header = styled.header`
   padding-bottom: 16px;
   align-items: center;
 `;
+
 const DurationToolbar = styled.nav`
   flex: 1 0 auto;
 `;
+
 const DurationButton = styled.button<{ selected: boolean }>`
   padding: 4px 8px;
   margin: 0;
@@ -55,10 +37,10 @@ const DurationButton = styled.button<{ selected: boolean }>`
   cursor: pointer;
 `;
 
-const GasPriceHistoryPanel: React.FC<GasPriceHistoryPanelProps> = ({
-  value,
-}) => {
-  const [duration, setDuration] = useState<Duration>("1d");
+const GasPriceHistoryPanel: React.FC = () => {
+  const [duration, setDuration] = useState<ChartDuration>("1d");
+  const { data, error } = useGasPriceHistory(duration);
+
   return (
     <Panel>
       <Header>
@@ -84,7 +66,7 @@ const GasPriceHistoryPanel: React.FC<GasPriceHistoryPanelProps> = ({
           </DurationButton>
         </DurationToolbar>
       </Header>
-      <GasPriceHistoryChart data={historyData} />
+      {data && <GasPriceHistoryChart data={data} />}
     </Panel>
   );
 };
