@@ -1,4 +1,5 @@
 import { BaseFee, ChartDuration, GasPriceHistoryData, FeeStats } from "~/types";
+import subscribe from "~/utils/subscribe";
 
 const BASE_URL = process.env.REACT_APP_API_HTTP_ENDPOINT || "";
 const DURATION_ENDPOINTS: Record<ChartDuration, string> = {
@@ -34,4 +35,38 @@ export async function fetchGasPriceHistory(
     throw new Error(body);
   }
   return body;
+}
+
+// Long polling
+// ======================================
+
+export function subscribeToBaseFee(
+  onData: (data: number) => void,
+  onError: (err: Error) => void
+) {
+  return subscribe(
+    `${BASE_URL}/poll/basefee`,
+    (res) =>
+      res
+        .text()
+        .then((text) => parseInt(text, 10))
+        .then(onData)
+        .catch((reason) => console.error("Base fee parsing error:", reason)),
+    onError
+  );
+}
+
+export function subscribeToFeeStats(
+  onData: (data: FeeStats) => void,
+  onError: (err: Error) => void
+) {
+  return subscribe(
+    `${BASE_URL}/poll/stats`,
+    (res) =>
+      res
+        .json()
+        .then(onData)
+        .catch((reason) => console.error("Base fee parsing error:", reason)),
+    onError
+  );
 }

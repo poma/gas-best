@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchFeeStats } from "~/services/api";
+import { fetchFeeStats, subscribeToFeeStats } from "~/services/api";
 import { FeeStats } from "~/types";
 
 function useFeeStats() {
@@ -8,6 +8,8 @@ function useFeeStats() {
 
   useEffect(() => {
     fetchFeeStats().then(setData).catch(setError);
+    const cancel = subscribeToFeeStats(setData, setError);
+    return cancel;
   }, []);
 
   return { data, error };

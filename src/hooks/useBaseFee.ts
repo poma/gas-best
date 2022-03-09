@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchBaseFee } from "~/services/api";
+import { fetchBaseFee, subscribeToBaseFee } from "~/services/api";
 import { BaseFee } from "~/types";
 
 function useBaseFee() {
@@ -8,6 +8,8 @@ function useBaseFee() {
 
   useEffect(() => {
     fetchBaseFee().then(setData).catch(setError);
+    const cancel = subscribeToBaseFee(setData, setError);
+    return cancel;
   }, []);
 
   return { data, error };
