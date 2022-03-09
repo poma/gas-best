@@ -17,10 +17,12 @@ interface BaseFeePanelProps {
 }
 
 const formatBaseFeeData = (data: FeeStatsRecent): ChartDataEntry[] =>
-  data.map((item) => ({
-    date: formatDateTime(item[0]),
-    fee: item[1],
-  }));
+  data
+    .map((item) => ({
+      date: formatDateTime(item[0]),
+      fee: item[1],
+    }))
+    .reverse();
 
 const BaseFeePanel: React.FC<BaseFeePanelProps> = ({ data }) => {
   return (
