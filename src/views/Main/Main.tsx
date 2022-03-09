@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Info from "~/components/Info";
 import useBaseFee from "~/hooks/useBaseFee";
@@ -31,7 +31,6 @@ const Bottom = styled.div``;
 function Main() {
   const { data: baseFee, error: baseFeeError } = useBaseFee();
   const { data: feeStats, error: feeStatsError } = useFeeStats();
-
   const [hidePanelTooltips, setHidePanelTooltips] = useState(false);
   return (
     <Body>
@@ -68,13 +67,7 @@ function Main() {
         />
       </Top>
       <Middle>
-        <LastBlockPanel
-          value={feeStats?.last.number}
-          timeSinceLastBlock={
-            feeStats &&
-            formatTimeDuration(Date.now() - feeStats.last.timestamp * 1000)
-          }
-        />
+        <LastBlockPanel lastBlockNumber={feeStats?.last.number} />
         <BaseFeePanel data={feeStats?.recent} />
       </Middle>
       <Bottom>
