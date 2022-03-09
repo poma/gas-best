@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useInterval } from "react-use";
 import { fetchGasPriceHistory } from "~/services/api";
 import {
   ChartDuration,
@@ -6,6 +7,8 @@ import {
   GasPriceHistoryChartDataEntry,
 } from "~/types";
 import formatDateTime from "~/utils/formatDateTime";
+
+const UPDATE_INTERVAL = 5 * 60 * 1000;
 
 const expandData = (
   data: GasPriceHistoryData
@@ -16,16 +19,47 @@ const expandData = (
     avg: data.avg[index],
   }));
 
+type Cache = Record<
+  ChartDuration,
+  { updated: number; data: GasPriceHistoryChartDataEntry[] }
+>;
+
 function useGasPriceHistory(duration: ChartDuration) {
   const [data, setData] = useState<GasPriceHistoryChartDataEntry[]>();
   const [error, setError] = useState<Error>();
+  const [timestamp, setTimestamp] = useState(Date.now());
 
-  // TODO add cache
+  const cache = useRef<Cache>({
+    "1d": { updated: 0, data: [] },
+    "1w": { updated: 0, data: [] },
+    "1m": { updated: 0, data: [] },
+  });
+
+  const updateCache = (data: GasPriceHistoryChartDataEntry[]) => {
+    cache.current[duration].data = data;
+    cache.current[duration].updated = Date.now();
+    return data;
+  };
+
+  useInterval(() => setTimestamp(Date.now()), UPDATE_INTERVAL);
+
   useEffect(() => {
-    fetchGasPriceHistory(duration)
-      .then(expandData)
-      .then(setData)
-      .catch(setError);
+    if (
+      !cache.current[duration].data.length ||
+      Date.now() - cache.current[duration].updated > UPDATE_INTERVAL
+    ) {
+      fetchGasPriceHistory(duration)
+        .then(expandData)
+        .then(updateCache)
+        .then(setData)
+        .catch(setError);
+    }
+  }, [duration, timestamp]);
+
+  useEffect(() => {
+    if (cache.current[duration].data.length) {
+      setData(cache.current[duration].data);
+    }
   }, [duration]);
 
   return { data, error };
