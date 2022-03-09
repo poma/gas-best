@@ -66,7 +66,7 @@ const GasPriceHistoryPanel: React.FC = () => {
           </DurationButton>
         </DurationToolbar>
       </Header>
-      {data && <GasPriceHistoryChart data={data} />}
+      <GasPriceHistoryChart history={data} />
     </Panel>
   );
 };

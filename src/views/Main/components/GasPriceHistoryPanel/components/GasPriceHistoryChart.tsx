@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { useTimeoutFn } from "react-use";
 import {
   Area,
   AreaChart,
@@ -9,20 +11,41 @@ import { ChartTooltip } from "~/components/ChartTooltip";
 import { GasPriceHistoryChartDataEntry } from "~/types";
 
 interface GasPriceHistoryChartProps {
-  data: GasPriceHistoryChartDataEntry[];
+  history?: GasPriceHistoryChartDataEntry[];
 }
 
+const defaultData: GasPriceHistoryChartDataEntry[] = [
+  { date: "", min: 0, avg: 0 },
+  { date: "", min: 0, avg: 0 },
+];
+
 const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
-  data,
+  history,
 }) => {
   const theme = useTheme();
+  const [animationDuration, setAnimationDuration] = useState(1);
+  const [data, setData] = useState(defaultData);
+  const [loaded, setLoaded] = useState(false);
+
+  useTimeoutFn(() => {
+    if (history && history.length > 0) {
+      setData(history);
+    }
+    setLoaded(true);
+  }, 200);
+
+  useEffect(() => {
+    if (history && loaded) {
+      setData(history);
+    }
+  }, [history, loaded]);
 
   return (
     <ResponsiveContainer width="100%" height={50}>
       <AreaChart
         width={150}
         height={40}
-        data={data}
+        data={data || defaultData}
         margin={{
           top: 0,
           right: 0,
@@ -65,7 +88,8 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
           color={theme.accent.secondary}
           fill="url(#minGradient)"
           activeDot={{ stroke: "none", r: 2 }}
-          animationDuration={600}
+          onAnimationEnd={() => setAnimationDuration(600)}
+          animationDuration={animationDuration}
         />
         <Area
           type="linear"
@@ -76,7 +100,8 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
           color={theme.accent.primary}
           fill="url(#avgGradient)"
           activeDot={{ stroke: "none", r: 2 }}
-          animationDuration={600}
+          onAnimationEnd={() => setAnimationDuration(600)}
+          animationDuration={animationDuration}
         />
         <RechartsTooltip
           cursor={false}
