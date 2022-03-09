@@ -37,6 +37,7 @@ function Main() {
       <Top>
         <FeePanel
           value={baseFee}
+          ethPrice={feeStats?.ethPrice}
           label={
             <span>
               {"Base fee "}
@@ -44,7 +45,11 @@ function Main() {
                 onShowTooltip={() => setHidePanelTooltips(true)}
                 onHideTooltip={() => setHidePanelTooltips(false)}
               >
-                <p>Static tooltip</p>
+                <p>
+                  You are never charged more than the current block base fee, so
+                  it's safe to set your fee to 2*BaseFee for instant
+                  confirmation time
+                </p>
               </Info>
             </span>
           }
@@ -52,16 +57,19 @@ function Main() {
         />
         <FeePanel
           value={feeStats?.forecast["15 min"]}
+          ethPrice={feeStats?.ethPrice}
           label="<15 min"
           hideTooltip={hidePanelTooltips}
         />
         <FeePanel
           value={feeStats?.forecast["1 hour"]}
+          ethPrice={feeStats?.ethPrice}
           label="<1 hour"
           hideTooltip={hidePanelTooltips}
         />
         <FeePanel
           value={feeStats?.forecast["1 day"]}
+          ethPrice={feeStats?.ethPrice}
           label="<1 day"
           hideTooltip={hidePanelTooltips}
         />

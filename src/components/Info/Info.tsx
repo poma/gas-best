@@ -12,8 +12,10 @@ const InfoIcon = styled(InfoSVG)`
 const InfoTooltip = styled(Tooltip)<{ show: boolean }>`
   top: 100%;
   left: -1px;
+  width: 160px;
   margin-top: 10px;
   visibility: ${(props) => (props.show ? "visible" : "hidden")};
+  white-space: normal;
 `;
 
 const IconContainer = styled.span`

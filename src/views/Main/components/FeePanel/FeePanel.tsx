@@ -5,6 +5,17 @@ import Stats from "~/components/Stats";
 import Text from "~/components/Text";
 import Tooltip from "~/components/Tooltip";
 
+const ETH_TRANSFER_GAS = 21000;
+const ERC20_TRANSFER_GAS = 50000;
+const DEX_TRADE_GAS = 175000;
+
+interface FeePanelProps {
+  value?: number;
+  label: React.ReactNode;
+  hideTooltip: boolean;
+  ethPrice?: number;
+}
+
 const FeeStats = styled(Stats)`
   display: block;
   width: 100%;
@@ -38,9 +49,9 @@ const FeeTooltipContent: React.FC<FeeTooltipContentProps> = ({
   dex,
 }) => (
   <React.Fragment>
-    <p>{`ETH transfer: $${eth}`}</p>
-    <p>{`ERC20 transfer: $${erc20}`}</p>
-    <p>{`DEX trade: $${dex}`}</p>
+    <p>{`ETH transfer: $${eth.toFixed(2)}`}</p>
+    <p>{`ERC20 transfer: $${erc20.toFixed(2)}`}</p>
+    <p>{`DEX trade: $${dex.toFixed(2)}`}</p>
   </React.Fragment>
 );
 
@@ -58,19 +69,22 @@ const HoverablePanel = styled(Panel)`
   }
 `;
 
-interface FeePanelProps {
-  value?: number;
-  label: React.ReactNode;
-  hideTooltip: boolean;
-}
-
 const FeePanel: React.FC<FeePanelProps> = ({
   value,
   label,
   hideTooltip,
+  ethPrice,
   ...props
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
+
+  if (!value || !ethPrice) {
+    return null;
+  }
+
+  const txCost = (txGasUse: number): number =>
+    (txGasUse * value * ethPrice) / 1e9;
+
   return (
     <HoverablePanel
       {...props}
@@ -83,7 +97,11 @@ const FeePanel: React.FC<FeePanelProps> = ({
         title="Approximate tx cost"
         show={showTooltip && !hideTooltip}
       >
-        <FeeTooltipContent eth={10} erc20={18} dex={67} />
+        <FeeTooltipContent
+          eth={txCost(ETH_TRANSFER_GAS)}
+          erc20={txCost(ERC20_TRANSFER_GAS)}
+          dex={txCost(DEX_TRADE_GAS)}
+        />
       </FeeTooltip>
     </HoverablePanel>
   );

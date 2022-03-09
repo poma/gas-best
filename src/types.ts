@@ -18,6 +18,7 @@ export interface FeeStats {
   last: FeeStatsLast;
   recent: FeeStatsRecent;
   forecast: FeeStatsForecast;
+  ethPrice: number;
 }
 
 export interface GasPriceHistoryData {
