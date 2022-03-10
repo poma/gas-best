@@ -31,16 +31,17 @@ const LastBlockStats = styled(Stats)`
 `;
 
 const LastBlockPanel: React.FC<LastBlockPanelProps> = ({ lastBlockNumber }) => {
-  const [lastBlockTime, setLastBlockTime] = useState(0);
+  const [lastBlockTime, setLastBlockTime] = useState(Date.now());
   const [timeSinceLastBlock, setTimeSinceLastBlock] = useState(0);
 
   useInterval(() => {
     setTimeSinceLastBlock(Math.floor((Date.now() - lastBlockTime) / 1000));
-  }, 1000);
+  }, 500);
 
   useEffect(() => {
     if (lastBlockNumber) {
       setLastBlockTime(Date.now());
+      setTimeSinceLastBlock(0);
     }
   }, [lastBlockNumber]);
 
