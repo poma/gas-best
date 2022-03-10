@@ -14,10 +14,11 @@ interface GasPriceHistoryChartProps {
   history?: GasPriceHistoryChartDataEntry[];
 }
 
-const defaultData: GasPriceHistoryChartDataEntry[] = [
-  { date: "", min: 0, avg: 0 },
-  { date: "", min: 0, avg: 0 },
-];
+const defaultData: GasPriceHistoryChartDataEntry[] = new Array(150).fill({
+  date: "",
+  min: 0,
+  avg: 0,
+});
 
 const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
   history,
