@@ -22,6 +22,7 @@ const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
   const theme = useTheme();
   const [selectedCell, setSelectedCell] = useState(-1);
   const [previousCell, setPreviousCell] = useState(-1);
+  const [animationDisabled, setAnimationDisabled] = useState(false);
 
   const updateSelectedCell = useCallback(
     (index: number) => {
@@ -55,7 +56,13 @@ const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
         }}
         barSize={2}
       >
-        <Bar dataKey="fee" name="Base fee" fill={theme.accent.primary}>
+        <Bar
+          dataKey="fee"
+          name="Base fee"
+          fill={theme.accent.primary}
+          onAnimationEnd={() => setAnimationDisabled(true)}
+          animationDuration={animationDisabled ? 1 : 600}
+        >
           {data.map((_entry, index) => (
             <Cell
               key={`cell-${index}`}

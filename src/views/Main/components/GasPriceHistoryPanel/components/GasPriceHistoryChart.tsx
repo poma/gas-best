@@ -24,9 +24,9 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
   history,
 }) => {
   const theme = useTheme();
-  const [animationDuration, setAnimationDuration] = useState(1);
   const [data, setData] = useState(defaultData);
   const [loaded, setLoaded] = useState(false);
+  const [animationDisabled, setAnimationDisabled] = useState(true);
 
   useTimeoutFn(() => {
     if (history && history.length > 0) {
@@ -89,8 +89,8 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
           color={theme.accent.secondary}
           fill="url(#minGradient)"
           activeDot={{ stroke: "none", r: 2 }}
-          onAnimationEnd={() => setAnimationDuration(600)}
-          animationDuration={animationDuration}
+          onAnimationEnd={() => setAnimationDisabled(false)}
+          animationDuration={animationDisabled ? 1 : 600}
         />
         <Area
           type="linear"
@@ -101,8 +101,8 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
           color={theme.accent.primary}
           fill="url(#avgGradient)"
           activeDot={{ stroke: "none", r: 2 }}
-          onAnimationEnd={() => setAnimationDuration(600)}
-          animationDuration={animationDuration}
+          onAnimationEnd={() => setAnimationDisabled(false)}
+          animationDuration={animationDisabled ? 1 : 600}
         />
         <RechartsTooltip
           cursor={false}
