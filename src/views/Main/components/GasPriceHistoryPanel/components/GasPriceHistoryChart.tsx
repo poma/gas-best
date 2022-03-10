@@ -25,19 +25,18 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
 }) => {
   const theme = useTheme();
   const [data, setData] = useState(defaultData);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [animationDisabled, setAnimationDisabled] = useState(true);
 
   useTimeoutFn(() => {
-    if (history && history.length > 0) {
-      setData(history);
-    }
     setLoaded(true);
   }, 200);
 
   useEffect(() => {
     if (history && loaded) {
       setData(history);
+      setDataLoaded(true);
     }
   }, [history, loaded]);
 
@@ -52,6 +51,10 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
           right: 0,
           left: 0,
           bottom: 0,
+        }}
+        style={{
+          opacity: dataLoaded ? 1 : 0,
+          transition: "opacity 300ms linear 100ms",
         }}
       >
         <defs>
