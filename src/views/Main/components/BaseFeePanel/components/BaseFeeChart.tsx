@@ -24,15 +24,12 @@ const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
   const [previousCell, setPreviousCell] = useState(-1);
   const [animationDisabled, setAnimationDisabled] = useState(false);
 
-  const updateSelectedCell = useCallback(
-    (index: number) => {
-      if (index !== selectedCell) {
-        setPreviousCell(selectedCell);
-        setSelectedCell(index);
-      }
-    },
-    [selectedCell, previousCell]
-  );
+  const updateSelectedCell = (index: number) => {
+    if (index !== selectedCell) {
+      setPreviousCell(selectedCell);
+      setSelectedCell(index);
+    }
+  };
 
   return (
     <ResponsiveContainer width="100%" height={26}>
