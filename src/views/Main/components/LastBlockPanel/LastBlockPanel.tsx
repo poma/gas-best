@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useInterval } from "react-use";
 import styled from "styled-components";
+import InlineLoader from "~/components/InlineLoader";
 import Panel from "~/components/Panel";
 import Stats from "~/components/Stats";
 import Text from "~/components/Text";
@@ -27,7 +28,7 @@ const LastBlockTime = styled.em<{ highlight: boolean }>`
 const LastBlockStats = styled(Stats)`
   display: block;
   width: 100%;
-  margin-bottom: -3px;
+  padding-top: 3px;
 `;
 
 const LastBlockPanel: React.FC<LastBlockPanelProps> = ({ lastBlockNumber }) => {
@@ -50,11 +51,15 @@ const LastBlockPanel: React.FC<LastBlockPanelProps> = ({ lastBlockNumber }) => {
       <LastBlockLabel>
         Last block mined{" "}
         <LastBlockTime highlight={timeSinceLastBlock > 60}>
-          {timeSinceLastBlock}s
+          {lastBlockNumber ? (
+            `${timeSinceLastBlock}s`
+          ) : (
+            <InlineLoader width="2ch" />
+          )}
         </LastBlockTime>{" "}
         ago
       </LastBlockLabel>
-      <LastBlockStats>{lastBlockNumber}</LastBlockStats>
+      <LastBlockStats>{lastBlockNumber || <InlineLoader />}</LastBlockStats>
     </Panel>
   );
 };

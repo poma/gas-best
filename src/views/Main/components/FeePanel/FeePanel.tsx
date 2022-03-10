@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import InlineLoader from "~/components/InlineLoader";
 import Panel from "~/components/Panel";
 import Stats from "~/components/Stats";
 import Text from "~/components/Text";
@@ -35,6 +36,7 @@ const FeeTooltip = styled(Tooltip)<{ show: boolean }>`
   left: -1px;
   margin-top: 10px;
   visibility: ${(props) => (props.show ? "visible" : "hidden")};
+  pointer-events: none;
 `;
 
 interface FeeTooltipContentProps {
@@ -78,12 +80,13 @@ const FeePanel: React.FC<FeePanelProps> = ({
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
-  if (!value || !ethPrice) {
-    return null;
-  }
-
-  const txCost = (txGasUse: number): number =>
-    (txGasUse * value * ethPrice) / 1e9;
+  const txCost = (txGasUse: number): number => {
+    if (value && ethPrice) {
+      return (txGasUse * value * ethPrice) / 1e9;
+    } else {
+      return 0;
+    }
+  };
 
   return (
     <HoverablePanel
@@ -91,7 +94,7 @@ const FeePanel: React.FC<FeePanelProps> = ({
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
-      <FeeStats>{value}</FeeStats>
+      {<FeeStats>{value || <InlineLoader />}</FeeStats>}
       <FeeLabel>{label}</FeeLabel>
       <FeeTooltip
         title="Approximate tx cost"

@@ -6,15 +6,15 @@ import { FeeStatsRecent } from "~/types";
 import formatDateTime from "~/utils/formatDateTime";
 import BaseFeeChart, { ChartDataEntry } from "./components/BaseFeeChart";
 
+interface BaseFeePanelProps {
+  data?: FeeStatsRecent;
+}
+
 const BaseFeeLabel = styled(Text)`
   display: block;
   width: 100%;
   padding-bottom: 9px;
 `;
-
-interface BaseFeePanelProps {
-  data?: FeeStatsRecent;
-}
 
 const formatBaseFeeData = (data: FeeStatsRecent): ChartDataEntry[] =>
   data
