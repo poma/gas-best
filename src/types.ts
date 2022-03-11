@@ -6,6 +6,10 @@ export interface FeeStatsLast {
   timestamp: number;
 }
 
+export interface FeeStatsPending {
+  fee: number;
+}
+
 export type FeeStatsRecent = Array<[number, number]>;
 
 export interface FeeStatsForecast {
@@ -16,6 +20,7 @@ export interface FeeStatsForecast {
 
 export interface FeeStats {
   last: FeeStatsLast;
+  pending: FeeStatsPending;
   recent: FeeStatsRecent;
   forecast: FeeStatsForecast;
   ethPrice: number;

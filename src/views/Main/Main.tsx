@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import Info from "~/components/Info";
-import useBaseFee from "~/hooks/useBaseFee";
 import useFeeStats from "~/hooks/useFeeStats";
-import formatTimeDuration from "~/utils/formatTimeDuration";
 import BaseFeePanel from "./components/BaseFeePanel";
 import FeePanel from "./components/FeePanel";
 import GasPriceHistoryPanel from "./components/GasPriceHistoryPanel";
@@ -29,14 +27,13 @@ const Middle = styled.div`
 const Bottom = styled.div``;
 
 function Main() {
-  const { data: baseFee, error: baseFeeError } = useBaseFee();
   const { data: feeStats, error: feeStatsError } = useFeeStats();
   const [hidePanelTooltips, setHidePanelTooltips] = useState(false);
   return (
     <Body>
       <Top>
         <FeePanel
-          value={baseFee}
+          value={feeStats?.pending.fee}
           ethPrice={feeStats?.ethPrice}
           label={
             <span>
@@ -45,6 +42,9 @@ function Main() {
                 onShowTooltip={() => setHidePanelTooltips(true)}
                 onHideTooltip={() => setHidePanelTooltips(false)}
               >
+                <p>
+                  Base fee of <em>pending</em> block.
+                </p>
                 <p>
                   You are never charged more than the current block base fee, so
                   it's safe to set your fee to 2*BaseFee for instant
