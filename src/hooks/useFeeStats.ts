@@ -9,16 +9,22 @@ function useIntervalFeeStats() {
   const [data, setData] = useState<FeeStats>();
   const [error, setError] = useState<Error>();
   const [timestamp, setTimestamp] = useState(0);
-  const [_, cancel, reset] = useTimeoutFn(
+  const [_, cancel, resetTimeout] = useTimeoutFn(
     () => setTimestamp(Date.now()),
     REQUEST_INTERVAL
   );
 
+  const clearError = () => setError(undefined);
+
   useEffect(() => {
     fetchFeeStats()
       .then(setData)
-      .then(() => reset())
-      .catch(setError);
+      .then(resetTimeout)
+      .then(clearError)
+      .catch((err) => {
+        setError(err);
+        resetTimeout();
+      });
     return cancel;
   }, [timestamp]);
 
@@ -29,9 +35,13 @@ function usePollFeeStats() {
   const [data, setData] = useState<FeeStats>();
   const [error, setError] = useState<Error>();
 
+  const clearError = () => setError(undefined);
+  const fetchData = () =>
+    fetchFeeStats().then(setData).then(clearError).catch(setError);
+
   useEffect(() => {
-    fetchFeeStats().then(setData).catch(setError);
-    const cancel = subscribeToFeeStats(setData, setError);
+    fetchData();
+    const cancel = subscribeToFeeStats(setData, setError, fetchData);
     return cancel;
   }, []);
 

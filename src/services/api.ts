@@ -42,7 +42,8 @@ export async function fetchGasPriceHistory(
 
 export function subscribeToBaseFee(
   onData: (data: number) => void,
-  onError: (err: Error) => void
+  onError: (err: Error) => void,
+  onRetry: () => void
 ) {
   return subscribe(
     `${BASE_URL}/poll/basefee`,
@@ -52,13 +53,15 @@ export function subscribeToBaseFee(
         .then((text) => parseInt(text, 10))
         .then(onData)
         .catch((reason) => console.error("Base fee parsing error:", reason)),
-    onError
+    onError,
+    onRetry
   );
 }
 
 export function subscribeToFeeStats(
   onData: (data: FeeStats) => void,
-  onError: (err: Error) => void
+  onError: (err: Error) => void,
+  onRetry: () => void
 ) {
   return subscribe(
     `${BASE_URL}/poll/stats`,
@@ -67,6 +70,7 @@ export function subscribeToFeeStats(
         .json()
         .then(onData)
         .catch((reason) => console.error("Base fee parsing error:", reason)),
-    onError
+    onError,
+    onRetry
   );
 }

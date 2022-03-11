@@ -9,6 +9,7 @@ import {
 import formatDateTime from "~/utils/formatDateTime";
 
 const UPDATE_INTERVAL = 5 * 60 * 1000;
+const RETRY_INTERVAL = 3000;
 
 const expandData = (
   data: GasPriceHistoryData
@@ -35,13 +36,17 @@ function useGasPriceHistory(duration: ChartDuration) {
     "1m": { updated: 0, data: [] },
   });
 
+  const interval = error ? RETRY_INTERVAL : UPDATE_INTERVAL;
+
   const updateCache = (data: GasPriceHistoryChartDataEntry[]) => {
     cache.current[duration].data = data;
     cache.current[duration].updated = Date.now();
     return data;
   };
 
-  useInterval(() => setTimestamp(Date.now()), UPDATE_INTERVAL);
+  const clearError = () => setError(undefined);
+
+  useInterval(() => setTimestamp(Date.now()), interval);
 
   useEffect(() => {
     if (
@@ -52,6 +57,7 @@ function useGasPriceHistory(duration: ChartDuration) {
         .then(expandData)
         .then(updateCache)
         .then(setData)
+        .then(clearError)
         .catch(setError);
     }
   }, [duration, timestamp]);

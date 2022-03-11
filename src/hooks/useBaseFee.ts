@@ -9,16 +9,22 @@ function useIntervalBaseFee() {
   const [data, setData] = useState<BaseFee>();
   const [error, setError] = useState<Error>();
   const [timestamp, setTimestamp] = useState(0);
-  const [_, cancel, reset] = useTimeoutFn(
+  const [_, cancel, resetTimeout] = useTimeoutFn(
     () => setTimestamp(Date.now()),
     REQUEST_INTERVAL
   );
 
+  const clearError = () => setError(undefined);
+
   useEffect(() => {
     fetchBaseFee()
       .then(setData)
-      .then(() => reset())
-      .catch(setError);
+      .then(resetTimeout)
+      .then(clearError)
+      .catch((err) => {
+        setError(err);
+        resetTimeout();
+      });
     return cancel;
   }, [timestamp]);
 
@@ -29,9 +35,13 @@ function usePollBaseFee() {
   const [data, setData] = useState<BaseFee>();
   const [error, setError] = useState<Error>();
 
+  const clearError = () => setError(undefined);
+  const fetchData = () =>
+    fetchBaseFee().then(setData).then(clearError).catch(setError);
+
   useEffect(() => {
-    fetchBaseFee().then(setData).catch(setError);
-    const cancel = subscribeToBaseFee(setData, setError);
+    fetchData();
+    const cancel = subscribeToBaseFee(setData, setError, fetchData);
     return cancel;
   }, []);
 
