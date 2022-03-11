@@ -28,7 +28,7 @@ const BaseFeePanel: React.FC<BaseFeePanelProps> = ({ data }) => {
   return (
     <Panel>
       <BaseFeeLabel>Base fee</BaseFeeLabel>
-      {data && <BaseFeeChart data={formatBaseFeeData(data)} />}
+      <BaseFeeChart data={data ? formatBaseFeeData(data) : []} />
     </Panel>
   );
 };

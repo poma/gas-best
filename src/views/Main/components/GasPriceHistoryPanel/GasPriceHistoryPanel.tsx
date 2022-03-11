@@ -29,8 +29,15 @@ const DurationButton = styled.button<{ selected: boolean }>`
   font-weight: 600;
   color: ${(props) =>
     props.selected ? props.theme.bg.secondary : props.theme.fg.primary};
-  background: ${(props) =>
-    props.selected ? props.theme.accent.primary : props.theme.bg.secondary};
+  background: ${(props) => {
+    if (props.disabled && props.selected) {
+      return props.theme.fg.primary;
+    }
+
+    return props.selected
+      ? props.theme.accent.primary
+      : props.theme.bg.secondary;
+  }};
   vertical-align: middle;
   border: none;
   border-radius: 24px;
@@ -49,18 +56,21 @@ const GasPriceHistoryPanel: React.FC = () => {
           <DurationButton
             selected={duration === "1d"}
             onClick={() => setDuration("1d")}
+            disabled={!data}
           >
             1D
           </DurationButton>
           <DurationButton
             selected={duration === "1w"}
             onClick={() => setDuration("1w")}
+            disabled={!data}
           >
             1W
           </DurationButton>
           <DurationButton
             selected={duration === "1m"}
             onClick={() => setDuration("1m")}
+            disabled={!data}
           >
             1M
           </DurationButton>

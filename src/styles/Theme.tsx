@@ -6,11 +6,13 @@ const theme = {
     title: "#ffffff",
     primary: "#727383",
     secondary: "#ffffff",
+    loader: "#47474f",
   },
   bg: {
     primary: "#21222D",
     secondary: "#171821",
     tertiary: "#323444",
+    loader: "#303035",
   },
   accent: {
     primary: "#20FFE2",
