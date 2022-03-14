@@ -23,7 +23,6 @@ const IconContainer = styled.span`
   width: 12px;
   height: 12px;
   vertical-align: middle;
-  cursor: pointer;
 
   ${hoverableIcon}
 `;

@@ -61,8 +61,7 @@ const HoverablePanel = styled(Panel)`
   position: relative;
 
   &:hover {
-    border-color: ${(props) => props.theme.fg.primary};
-    cursor: pointer;
+    border-color: ${(props) => props.theme.bg.hover};
   }
 
   &:last-child ${FeeTooltip} {

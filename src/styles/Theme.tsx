@@ -13,6 +13,7 @@ const theme = {
     secondary: "#171821",
     tertiary: "#323444",
     loader: "#303035",
+    hover: "#3A3B47",
   },
   accent: {
     primary: "#20FFE2",
