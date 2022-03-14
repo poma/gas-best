@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTimeoutFn } from "react-use";
 import { fetchFeeStats, subscribeToFeeStats } from "~/services/api";
 import { FeeStats } from "~/types";
@@ -26,7 +26,7 @@ function useIntervalFeeStats() {
         resetTimeout();
       });
     return cancel;
-  }, [timestamp]);
+  }, [timestamp, cancel, resetTimeout]);
 
   return { data, error };
 }
@@ -36,14 +36,16 @@ function usePollFeeStats() {
   const [error, setError] = useState<Error>();
 
   const clearError = () => setError(undefined);
-  const fetchData = () =>
-    fetchFeeStats().then(setData).then(clearError).catch(setError);
+  const fetchData = useCallback(
+    () => fetchFeeStats().then(setData).then(clearError).catch(setError),
+    []
+  );
 
   useEffect(() => {
     fetchData();
     const cancel = subscribeToFeeStats(setData, setError, fetchData);
     return cancel;
-  }, []);
+  }, [fetchData]);
 
   return { data, error };
 }

@@ -21,12 +21,12 @@ function subscribe(
 
       if (options.cancel) return;
 
-      if (response.status == 502) {
+      if (response.status === 502) {
         // Connection timeout
         // happens when the connection was pending for too long
         // let's reconnect
         await subscribeHelper();
-      } else if (response.status != 200) {
+      } else if (response.status !== 200) {
         // Show Error
         onError(new Error(response.statusText));
         // Reconnect in few seconds

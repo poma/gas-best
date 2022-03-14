@@ -27,7 +27,7 @@ const Middle = styled.div`
 const Bottom = styled.div``;
 
 function Main() {
-  const { data: feeStats, error: feeStatsError } = useFeeStats();
+  const { data: feeStats, error: _feeStatsError } = useFeeStats();
   const [hidePanelTooltips, setHidePanelTooltips] = useState(false);
   return (
     <Body>

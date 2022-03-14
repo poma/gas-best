@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useInterval } from "react-use";
 import { fetchGasPriceHistory } from "~/services/api";
 import {
@@ -38,11 +38,14 @@ function useGasPriceHistory(duration: ChartDuration) {
 
   const interval = error ? RETRY_INTERVAL : UPDATE_INTERVAL;
 
-  const updateCache = (data: GasPriceHistoryChartDataEntry[]) => {
-    cache.current[duration].data = data;
-    cache.current[duration].updated = Date.now();
-    return data;
-  };
+  const updateCache = useCallback(
+    (data: GasPriceHistoryChartDataEntry[]) => {
+      cache.current[duration].data = data;
+      cache.current[duration].updated = Date.now();
+      return data;
+    },
+    [cache, duration]
+  );
 
   const clearError = () => setError(undefined);
 
@@ -60,7 +63,7 @@ function useGasPriceHistory(duration: ChartDuration) {
         .then(clearError)
         .catch(setError);
     }
-  }, [duration, timestamp]);
+  }, [duration, timestamp, updateCache]);
 
   useEffect(() => {
     if (cache.current[duration].data.length) {

@@ -43,7 +43,7 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
       <ChartTooltipWrapper
         title={title || (titleFormatter && titleFormatter(payload[0].payload))}
       >
-        {payload.map((item: ChartTooltipPayload, i: number) => {
+        {payload.map((item: ChartTooltipPayload) => {
           const { value, name, color } = item;
           return (
             <ChartTooltipDataLine
