@@ -1,8 +1,10 @@
+import React from "react";
 import { useState } from "react";
 import {
   Bar,
   BarChart,
   Cell,
+  Rectangle,
   ResponsiveContainer,
   Tooltip as RechartsTooltip,
 } from "recharts";
@@ -20,9 +22,11 @@ interface BaseFeeChartProps {
 }
 
 const StyledBarChart = styled(BarChart)`
-  &:not(:hover) path {
-    fill: ${(props) => props.theme.accent.primary};
-    transition: fill 200ms linear;
+  & #chart-fill {
+    transition: opacity 150ms linear;
+  }
+  &:hover #chart-fill {
+    opacity: 0;
   }
 `;
 
@@ -71,16 +75,33 @@ const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
             // HACK: remove data update animation
             onAnimationEnd={() => setAnimationDisabled(true)}
             animationDuration={animationDisabled ? 1 : 600}
+            shape={(props: any) => {
+              const { x, y, height, width, radius, index } = props;
+              return (
+                <React.Fragment>
+                  <Rectangle
+                    {...props}
+                    fill={
+                      selectedCell === index
+                        ? theme.accent.primary
+                        : theme.bg.tertiary
+                    }
+                  />
+                  <Rectangle
+                    x={x}
+                    y={y}
+                    height={height}
+                    width={width}
+                    radius={radius}
+                    id="chart-fill"
+                    fill={theme.accent.primary}
+                  />
+                </React.Fragment>
+              );
+            }}
           >
             {data.map((_entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={
-                  selectedCell === index
-                    ? theme.accent.primary
-                    : theme.bg.tertiary
-                }
-              />
+              <Cell key={`cell-${index}`} />
             ))}
           </Bar>
           <RechartsTooltip
