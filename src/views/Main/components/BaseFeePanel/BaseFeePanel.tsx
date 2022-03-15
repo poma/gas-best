@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import Panel from "~/components/Panel";
 import Text from "~/components/Text";
@@ -25,10 +25,15 @@ const formatBaseFeeData = (data: FeeStatsRecent): BaseFeeChartDataEntry[] =>
     .reverse();
 
 const BaseFeePanel: React.FC<BaseFeePanelProps> = ({ data }) => {
+  const formattedData = useMemo(
+    () => (data ? formatBaseFeeData(data) : []),
+    [data]
+  );
+
   return (
     <Panel>
       <BaseFeeLabel>Base fee</BaseFeeLabel>
-      <BaseFeeChart data={data ? formatBaseFeeData(data) : []} />
+      <BaseFeeChart data={formattedData} />
     </Panel>
   );
 };
