@@ -4,7 +4,7 @@ import Panel from "~/components/Panel";
 import Text from "~/components/Text";
 import { FeeStatsRecent } from "~/types";
 import formatDateTime from "~/utils/formatDateTime";
-import BaseFeeChart, { ChartDataEntry } from "./components/BaseFeeChart";
+import BaseFeeChart, { BaseFeeChartDataEntry } from "./components/BaseFeeChart";
 
 interface BaseFeePanelProps {
   data?: FeeStatsRecent;
@@ -16,7 +16,7 @@ const BaseFeeLabel = styled(Text)`
   padding-bottom: 9px;
 `;
 
-const formatBaseFeeData = (data: FeeStatsRecent): ChartDataEntry[] =>
+const formatBaseFeeData = (data: FeeStatsRecent): BaseFeeChartDataEntry[] =>
   data
     .map((item) => ({
       date: formatDateTime(item[0]),

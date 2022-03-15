@@ -6,18 +6,25 @@ import {
   ResponsiveContainer,
   Tooltip as RechartsTooltip,
 } from "recharts";
-import { useTheme } from "styled-components";
+import styled, { useTheme } from "styled-components";
 import ChartLoader from "~/components/ChartLoader";
 import { ChartTooltip } from "~/components/ChartTooltip";
 
-export interface ChartDataEntry {
+export interface BaseFeeChartDataEntry {
   date: string;
   fee: number;
 }
 
 interface BaseFeeChartProps {
-  data: ChartDataEntry[];
+  data: BaseFeeChartDataEntry[];
 }
+
+const StyledBarChart = styled(BarChart)`
+  &:not(:hover) path {
+    fill: ${(props) => props.theme.accent.primary};
+    transition: fill 200ms linear;
+  }
+`;
 
 const loaderData = [
   21, 23, 19, 21, 22, 21, 21, 19, 20, 18, 20, 21, 22, 21, 22, 26, 24, 29, 29,
@@ -27,20 +34,18 @@ const loaderData = [
 const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
   const theme = useTheme();
   const [selectedCell, setSelectedCell] = useState(-1);
-  const [previousCell, setPreviousCell] = useState(-1);
   const [animationDisabled, setAnimationDisabled] = useState(false);
 
   const updateSelectedCell = (index: number) => {
     if (index !== selectedCell) {
-      setPreviousCell(selectedCell);
       setSelectedCell(index);
     }
   };
 
   return (
     <ResponsiveContainer width="100%" height={26}>
-      {data.length ? (
-        <BarChart
+      {data.length > 0 ? (
+        <StyledBarChart
           data={data}
           onMouseMove={(data, _event) => {
             if (data?.activeTooltipIndex !== undefined) {
@@ -62,24 +67,19 @@ const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
             dataKey="fee"
             name="Base fee"
             fill={theme.accent.primary}
+            radius={2}
+            // HACK: remove data update animation
             onAnimationEnd={() => setAnimationDisabled(true)}
             animationDuration={animationDisabled ? 1 : 600}
           >
             {data.map((_entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                strokeLinecap="round"
                 fill={
-                  selectedCell < 0 || selectedCell === index
+                  selectedCell === index
                     ? theme.accent.primary
                     : theme.bg.tertiary
                 }
-                style={{
-                  transition:
-                    selectedCell < 0 || previousCell < 0
-                      ? "fill 200ms ease"
-                      : "none",
-                }}
               />
             ))}
           </Bar>
@@ -94,7 +94,7 @@ const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
               />
             )}
           />
-        </BarChart>
+        </StyledBarChart>
       ) : (
         <ChartLoader width={160} height={26} data={loaderData} />
       )}
