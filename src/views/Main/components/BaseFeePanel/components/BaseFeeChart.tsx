@@ -3,7 +3,6 @@ import { useState } from "react";
 import {
   Bar,
   BarChart,
-  Cell,
   Rectangle,
   ResponsiveContainer,
   Tooltip as RechartsTooltip,
@@ -22,10 +21,10 @@ interface BaseFeeChartProps {
 }
 
 const StyledBarChart = styled(BarChart)`
-  & #chart-fill {
+  & .chart-fill {
     transition: opacity 150ms linear;
   }
-  &:hover #chart-fill {
+  &:hover .chart-fill {
     opacity: 0;
   }
 `;
@@ -93,17 +92,13 @@ const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
                     height={height}
                     width={width}
                     radius={radius}
-                    id="chart-fill"
+                    className="chart-fill"
                     fill={theme.accent.primary}
                   />
                 </React.Fragment>
               );
             }}
-          >
-            {data.map((_entry, index) => (
-              <Cell key={`cell-${index}`} />
-            ))}
-          </Bar>
+          />
           <RechartsTooltip
             cursor={false}
             allowEscapeViewBox={{ y: true }}
