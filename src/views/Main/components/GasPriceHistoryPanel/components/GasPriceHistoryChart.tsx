@@ -7,6 +7,7 @@ import {
   Tooltip as RechartsTooltip,
 } from "recharts";
 import { useTheme } from "styled-components";
+import { mix } from "polished";
 import ChartLoader from "~/components/ChartLoader";
 import { ChartTooltip } from "~/components/ChartTooltip";
 import { GasPriceHistoryChartDataEntry } from "~/types";
@@ -68,48 +69,44 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
             <linearGradient id="avgGradient" x1="0" y1="0" x2="0" y2="1">
               <stop
                 offset="0%"
-                stopColor={theme.accent.primary}
-                stopOpacity={0.6}
+                stopColor={mix(0.3, theme.accent.primary, theme.bg.primary)}
               />
               <stop
                 offset="100%"
-                stopColor={theme.accent.primary}
-                stopOpacity={0.1}
+                stopColor={mix(0.05, theme.accent.primary, theme.bg.primary)}
               />
             </linearGradient>
             <linearGradient id="minGradient" x1="0" y1="0" x2="0" y2="1">
               <stop
                 offset="0%"
-                stopColor={theme.accent.secondary}
-                stopOpacity={0.6}
+                stopColor={mix(0.3, theme.accent.secondary, theme.bg.primary)}
               />
               <stop
                 offset="100%"
-                stopColor={theme.accent.secondary}
-                stopOpacity={0.1}
+                stopColor={mix(0.05, theme.accent.secondary, theme.bg.primary)}
               />
             </linearGradient>
           </defs>
           <Area
             type="linear"
-            dataKey="min"
-            name="Minimum"
-            stackId="0"
-            stroke={theme.accent.secondary}
-            color={theme.accent.secondary}
-            fill="url(#minGradient)"
+            dataKey="avg"
+            name="Average"
+            stroke={theme.accent.primary}
+            color={theme.accent.primary}
+            fill="url(#avgGradient)"
+            fillOpacity={1}
             activeDot={{ stroke: "none", r: 2 }}
             onAnimationEnd={() => setAnimationDisabled(false)}
             animationDuration={animationDisabled ? 1 : 600}
           />
           <Area
             type="linear"
-            dataKey="avg"
-            name="Average"
-            stackId="0"
-            stroke={theme.accent.primary}
-            color={theme.accent.primary}
-            fill="url(#avgGradient)"
+            dataKey="min"
+            name="Minimum"
+            stroke={theme.accent.secondary}
+            color={theme.accent.secondary}
+            fill="url(#minGradient)"
+            fillOpacity={1}
             activeDot={{ stroke: "none", r: 2 }}
             onAnimationEnd={() => setAnimationDisabled(false)}
             animationDuration={animationDisabled ? 1 : 600}
@@ -121,7 +118,7 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
                 active={active}
                 // workaround for item order issue
                 // https://github.com/recharts/recharts/issues/1241
-                payload={[...(payload || [])].reverse()}
+                payload={[...(payload || [])]}
                 titleFormatter={(payload: any) => payload.date}
               />
             )}
