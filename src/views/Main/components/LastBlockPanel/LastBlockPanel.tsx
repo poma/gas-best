@@ -13,7 +13,7 @@ interface LastBlockPanelProps {
 const LastBlockLabel = styled(Text)`
   display: block;
   width: 100%;
-  padding-bottom: 9px;
+  padding-bottom: 8px;
 
   & em {
     font-style: normal;
@@ -28,7 +28,6 @@ const LastBlockTime = styled.em<{ highlight: boolean }>`
 const LastBlockStats = styled(Stats)`
   display: block;
   width: 100%;
-  padding-top: 3px;
 `;
 
 const LastBlockPanel: React.FC<LastBlockPanelProps> = ({ lastBlockNumber }) => {

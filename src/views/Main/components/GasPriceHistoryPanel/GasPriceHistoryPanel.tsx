@@ -6,6 +6,10 @@ import useGasPriceHistory from "~/hooks/useGasPriceHistory";
 import { ChartDuration } from "~/types";
 import GasPriceHistoryChart from "./components/GasPriceHistoryChart";
 
+const StyledPanel = styled(Panel)`
+  padding-bottom: 8px;
+`;
+
 const GasPriceHistoryLabel = styled(Text)`
   display: block;
   width: 100%;
@@ -46,10 +50,9 @@ const DurationButton = styled.button<{ selected: boolean }>`
 
 const GasPriceHistoryPanel: React.FC = () => {
   const [duration, setDuration] = useState<ChartDuration>("1d");
-  const { data, error } = useGasPriceHistory(duration);
-
+  const { data, error: _ } = useGasPriceHistory(duration);
   return (
-    <Panel>
+    <StyledPanel>
       <Header>
         <GasPriceHistoryLabel>Gas price history</GasPriceHistoryLabel>
         <DurationToolbar>
@@ -77,7 +80,7 @@ const GasPriceHistoryPanel: React.FC = () => {
         </DurationToolbar>
       </Header>
       <GasPriceHistoryChart history={data} />
-    </Panel>
+    </StyledPanel>
   );
 };
 

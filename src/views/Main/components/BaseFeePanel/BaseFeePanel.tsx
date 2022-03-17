@@ -13,7 +13,7 @@ interface BaseFeePanelProps {
 const BaseFeeLabel = styled(Text)`
   display: block;
   width: 100%;
-  padding-bottom: 9px;
+  padding-bottom: 8px;
 `;
 
 const formatBaseFeeData = (data: FeeStatsRecent): BaseFeeChartDataEntry[] =>

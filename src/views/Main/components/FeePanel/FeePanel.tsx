@@ -27,7 +27,6 @@ const FeeLabel = styled(Text)`
   display: block;
   width: 100%;
   text-align: right;
-  margin-bottom: -3px;
 `;
 
 const FeeTooltip = styled(Tooltip)<{ show: boolean }>`

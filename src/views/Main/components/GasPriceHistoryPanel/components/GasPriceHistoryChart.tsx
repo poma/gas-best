@@ -50,15 +50,15 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
   }, [history, loaded]);
 
   return (
-    <ResponsiveContainer width="100%" height={50}>
+    <ResponsiveContainer width="100%" height={80}>
       {history ? (
         <AreaChart
           data={data || defaultData}
           margin={{
-            top: 0,
+            top: 2,
             right: 0,
             left: 0,
-            bottom: 0,
+            bottom: 2,
           }}
           style={{
             opacity: dataLoaded ? 1 : 0,
