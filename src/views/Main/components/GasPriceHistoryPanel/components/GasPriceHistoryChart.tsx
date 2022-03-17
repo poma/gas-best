@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTimeoutFn } from "react-use";
 import {
   Area,
   AreaChart,
+  Customized,
+  Dot,
+  Polygon,
   ResponsiveContainer,
   Tooltip as RechartsTooltip,
+  YAxis,
 } from "recharts";
 import { useTheme } from "styled-components";
 import { mix } from "polished";
@@ -15,6 +19,8 @@ import { GasPriceHistoryChartDataEntry } from "~/types";
 interface GasPriceHistoryChartProps {
   history?: GasPriceHistoryChartDataEntry[];
 }
+
+const DOT_RADIUS = 2;
 
 const defaultData: GasPriceHistoryChartDataEntry[] = new Array(150).fill({
   date: "",
@@ -48,6 +54,18 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
       setDataLoaded(true);
     }
   }, [history, loaded]);
+
+  const maxY = useMemo(() => {
+    if (history && history.length > 4) {
+      const sortedByAvg = [...history].sort((a, b) => b.avg - a.avg);
+
+      const avg1st = sortedByAvg[0].avg;
+      const avg4th = sortedByAvg[4].avg;
+
+      return avg1st < avg4th * 1.2 ? avg1st : avg4th;
+    }
+    return 0;
+  }, [history]);
 
   return (
     <ResponsiveContainer width="100%" height={80}>
@@ -95,7 +113,29 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
             color={theme.accent.primary}
             fill="url(#avgGradient)"
             fillOpacity={1}
-            activeDot={{ stroke: "none", r: 2 }}
+            activeDot={({ cy, ...props }) => {
+              return cy > 0 ? (
+                <Dot
+                  {...props}
+                  id="chart-avg-dot"
+                  cy={cy > DOT_RADIUS ? cy : DOT_RADIUS}
+                  stroke="none"
+                  r={DOT_RADIUS}
+                />
+              ) : (
+                <Polygon
+                  {...props}
+                  id="chart-avg-dot"
+                  points={[
+                    { x: 0, y: 0 },
+                    { x: DOT_RADIUS, y: DOT_RADIUS * 2 },
+                    { x: -DOT_RADIUS, y: DOT_RADIUS * 2 },
+                  ]}
+                  transform={`translate(${props.cx}, 0)`}
+                  stroke="none"
+                />
+              );
+            }}
             onAnimationEnd={() => setAnimationDisabled(false)}
             animationDuration={animationDisabled ? 1 : 600}
           />
@@ -107,16 +147,42 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
             color={theme.accent.secondary}
             fill="url(#minGradient)"
             fillOpacity={1}
-            activeDot={{ stroke: "none", r: 2 }}
+            activeDot={{ stroke: "none", r: DOT_RADIUS }}
             onAnimationEnd={() => setAnimationDisabled(false)}
             animationDuration={animationDisabled ? 1 : 600}
+            yAxisId="minAxis"
+          />
+          <YAxis
+            yAxisId="minAxis"
+            type="number"
+            domain={["dataMin", maxY]}
+            allowDataOverflow
+            hide
+            mirror
+          />
+          <YAxis
+            type="number"
+            domain={["dataMin-15", maxY]}
+            allowDataOverflow
+            hide
+            mirror
+          />
+          <Customized
+            // workaround for svg paint order issue
+            // https://github.com/recharts/recharts/issues/2295
+            component={
+              <React.Fragment>
+                <use xlinkHref="#chart-min-dot" />
+                <use xlinkHref="#chart-avg-dot" />
+              </React.Fragment>
+            }
           />
           <RechartsTooltip
             cursor={false}
             content={({ active, payload }) => (
               <ChartTooltip
                 active={active}
-                // workaround for item order issue
+                // workaround for line order issue
                 // https://github.com/recharts/recharts/issues/1241
                 payload={[...(payload || [])]}
                 titleFormatter={(payload: any) => payload.date}
