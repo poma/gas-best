@@ -1,9 +1,12 @@
 # Gas price tracker [![build](https://github.com/poma/gas-tracker-ui/actions/workflows/build.yml/badge.svg)](https://github.com/poma/gas-tracker-ui/actions/workflows/build.yml)
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+<img width="458" alt="image" src="https://user-images.githubusercontent.com/2109710/158978962-5aab5bdd-a680-441f-877e-6078d5ceb799.png">
+
+Live version can be found at https://gas.poma.in
 
 ## Available Scripts
 
-In the project directory, you can run:
+The app is written using React. In the project directory, you can run:
 
 ### `yarn start`
 
@@ -13,33 +16,28 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
 ### `yarn build`
 
 Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+It correctly bundles React in production mode and optimizes the build for the best performance.\
+The build is minified and the filenames include the hashes.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Contributors ✨
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Thanks goes to these wonderful people:
 
-### `yarn eject`
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/poma"><img src="https://avatars.githubusercontent.com/u/2109710?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Roman Semenov</b></sub></a><br /><a href="#backend-poma" title="Backend">💻</a> <a href="#infra-poma" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#financial-poma" title="Financial">💵</a> <a href="#design-poma" title="Design">🎨</a></td>
+    <td align="center"><a href="https://github.com/kotokrad"><img src="https://avatars.githubusercontent.com/u/3849707?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Evgeniy Voichenko</b></sub></a><br /><a href="https://github.com/poma/gas-tracker-ui/commits?author=kotokrad" title="Code">💻</a></td>
+    <td align="center"><a href="https://fomalhaut.su/"><img src="https://avatars.githubusercontent.com/u/6025172?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Alexander Khlebushchev</b></sub></a><br /><a href="#prediction-fomalhaut88" title="Price prediction engine">🧠</a></td>
+  </tr>
+</table>
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+<!-- ALL-CONTRIBUTORS-LIST:END -->
