@@ -186,6 +186,11 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
                 // https://github.com/recharts/recharts/issues/1241
                 payload={[...(payload || [])]}
                 titleFormatter={(payload: any) => payload.date}
+                valueFormatter={(payload: any) =>
+                  payload.value > maxY
+                    ? `${payload.value} (cropped)`
+                    : payload.value
+                }
               />
             )}
           />
