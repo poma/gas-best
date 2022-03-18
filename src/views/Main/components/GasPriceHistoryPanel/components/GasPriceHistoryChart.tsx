@@ -21,6 +21,8 @@ interface GasPriceHistoryChartProps {
 }
 
 const DOT_RADIUS = 2;
+const GRAPH_CUTOFF_POINTS = 3;
+const GRAPH_CUTOFF_FACTOR = 1.5;
 
 const defaultData: GasPriceHistoryChartDataEntry[] = new Array(150).fill({
   date: "",
@@ -59,10 +61,10 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
     if (history && history.length > 4) {
       const sortedByAvg = [...history].sort((a, b) => b.avg - a.avg);
 
-      const avg1st = sortedByAvg[0].avg;
-      const avg4th = sortedByAvg[4].avg;
+      const avgMax = sortedByAvg[0].avg;
+      const avgNext = sortedByAvg[GRAPH_CUTOFF_POINTS].avg;
 
-      return avg1st < avg4th * 1.2 ? avg1st : avg4th;
+      return avgMax < avgNext * GRAPH_CUTOFF_FACTOR ? avgMax : avgNext;
     }
     return 0;
   }, [history]);
