@@ -1,0 +1,71 @@
+name: build
+
+on:
+  push:
+    branches: ['*']
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: yarn install
+      # - run: yarn test
+      - run: yarn build
+      - name: Telegram Failure Notification
+        uses: appleboy/telegram-action@0.0.7
+        if: failure()
+        with:
+          message: ❗ Build failed for [${{ github.repository }}](https://github.com/${{ github.repository }}/actions) because of ${{ github.actor }}
+          format: markdown
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+    if: startsWith(github.ref, 'refs/heads/')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set vars
+        id: vars
+        run: |
+          echo "::set-output name=tag::$(echo $GITHUB_REF_NAME | sed -e 's/^master$/latest/')"
+          echo "::set-output name=repo_name::$(echo ${GITHUB_REPOSITORY#*/})"
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.tag }}
+
+      - name: Telegram Notification
+        uses: appleboy/telegram-action@0.0.7
+        with:
+          message: 🚀 Published a [${{ steps.vars.outputs.repo_name }}](https://github.com/${{ github.repository }}) to [GitHub registry](https://github.com/${{ github.repository }}/pkgs/container/${{ steps.vars.outputs.repo_name }})
+          format: markdown
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+
+      - name: Telegram Failure Notification
+        uses: appleboy/telegram-action@0.0.7
+        if: failure()
+        with:
+          message: ❗ Failed to publish [${{ steps.vars.outputs.repo_name }}](https://github.com/${{ github.repository }}/actions) because of ${{ github.actor }}
+          format: markdown
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
