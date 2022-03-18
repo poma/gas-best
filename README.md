@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Gas price tracker [![Build Status](https://github.com/poma/gas-tracker-ui/workflows/build/badge.svg)](https://github.com/poma/gas-tracker-ui/actions)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
