@@ -2,7 +2,18 @@
 
 <img width="458" alt="image" src="https://user-images.githubusercontent.com/2109710/158978962-5aab5bdd-a680-441f-877e-6078d5ceb799.png">
 
-Live version can be found at https://gas.poma.in
+Ethereum gas price extension with EIP-1559 support, fast updates, price prediction, and historical fee charts.
+
+Save your ETH by sending transactions at cheaper gas prices. Ethereum base fee fluctuates a lot, so if you are willing to wait a bit, you can save up to 50% on gas fees by catching a dip. Charts allow you to see at a glance whether the fee market is stable or gas prices surged 5x 10 minutes ago and it's wise a wait a little before submitting a transaction.
+
+See web version at https://gas.poma.in
+
+- Gets latest gas prices faster than most other extensions
+- Gets fee data from own server with advanced price prediction algorithms
+- Shows USD prices for common transaction types
+- Charts of historic average and minimum gas prices
+- No user tracking or data collection
+- EIP-1559 support
 
 ## Available Scripts
 
