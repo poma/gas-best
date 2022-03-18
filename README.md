@@ -9,15 +9,22 @@ Save your ETH by sending transactions at cheaper gas prices. Ethereum base fee f
 See web version at https://gas.poma.in
 
 - Gets latest gas prices faster than most other extensions
-- Gets fee data from own server with advanced price prediction algorithms
-- Shows USD prices for common transaction types
+- Uses advanced price prediction algorithms based on historical patterns
 - Charts of historic average and minimum gas prices
+- Shows USD prices for common transaction types
 - No user tracking or data collection
 - EIP-1559 support
 
 ## Available Scripts
 
-The app is written using React. In the project directory, you can run:
+The app is written using React. Before building you need to initialize the project:
+
+```bash
+yarn
+cp .env.example .env
+```
+
+In the project directory, you can run:
 
 ### `yarn start`
 
