@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Main from "./views/Main";
 import Container from "./components/Container";
 import Theme from "./styles/Theme";
-import NotificationButton from "./components/NotificationButton";
-import PasteButton from "./components/PasteButton";
+// import NotificationButton from "./components/NotificationButton";
+// import PasteButton from "./components/PasteButton";
 
 type Page = "main" | "test";
 
@@ -13,7 +13,7 @@ const titles: Record<Page, string> = {
 };
 
 function App() {
-  const [page, setPage] = useState<Page>("main");
+  const [page, _setPage] = useState<Page>("main");
 
   const renderPages = () => {
     switch (page) {
@@ -28,12 +28,12 @@ function App() {
       <Theme>
         <Container
           title={titles[page]}
-          nav={
-            <React.Fragment>
-              <PasteButton onClick={() => setPage("main")} />
-              <NotificationButton onClick={() => setPage("test")} />
-            </React.Fragment>
-          }
+          // nav={
+          //   <React.Fragment>
+          //     <PasteButton onClick={() => setPage("main")} />
+          //     <NotificationButton onClick={() => setPage("test")} />
+          //   </React.Fragment>
+          // }
         >
           {renderPages()}
         </Container>

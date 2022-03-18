@@ -27,7 +27,7 @@ const Nav = styled.nav``;
 
 interface ContainerProps {
   title: string;
-  nav: React.ReactNode;
+  nav?: React.ReactNode;
 }
 
 const Container: React.FC<ContainerProps> = ({ children, title, nav }) => {
@@ -35,7 +35,7 @@ const Container: React.FC<ContainerProps> = ({ children, title, nav }) => {
     <Wrapper>
       <Header>
         <Title>{title}</Title>
-        <Nav>{nav}</Nav>
+        {!!nav && <Nav>{nav}</Nav>}
       </Header>
       {children}
     </Wrapper>
