@@ -1,5 +1,4 @@
-# Gas price tracker [![Build Status](https://github.com/poma/gas-tracker-ui/workflows/build/badge.svg)](https://github.com/poma/gas-tracker-ui/actions)
-
+# Gas price tracker [![build](https://github.com/poma/gas-tracker-ui/actions/workflows/build.yml/badge.svg)](https://github.com/poma/gas-tracker-ui/actions/workflows/build.yml)
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
