@@ -27,6 +27,8 @@
   "scripts": {
     "start": "BROWSER=none craco start",
     "build": "craco build",
+    "build:chrome": "REACT_APP_EXTENSION=chrome INLINE_RUNTIME_CHUNK=false craco build",
+    "build:firefox": "REACT_APP_EXTENSION=firefox INLINE_RUNTIME_CHUNK=false craco build",
     "test": "craco test",
     "eject": "craco eject"
   },
@@ -58,6 +60,8 @@
     ]
   },
   "devDependencies": {
+    "@types/chrome": "^0.0.180",
+    "copy-webpack-plugin": "6",
     "craco-alias": "^3.0.1"
   }
 }
