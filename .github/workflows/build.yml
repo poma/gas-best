@@ -33,7 +33,7 @@ jobs:
         uses: appleboy/telegram-action@v0.1.1
         if: failure()
         with:
-          message: ❗ Build failed for [${{ github.repository }}](https://github.com/${{ github.repository }}/actions) because of ${{ github.actor }}
+          message: ❗ Build failed for [${{ github.repository }}](https://github.com/${{ github.repository }}/actions) because of [${{ github.actor }}](https://github.com/${{ github.actor }})
           format: markdown
           disable_web_page_preview: true
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -71,7 +71,7 @@ jobs:
       - uses: nrwl/last-successful-commit-action@v1
         id: last_successful_commit
         with:
-          branch: 'changelog-test'
+          branch: 'master'
           workflow_id: 'build.yml'
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -98,7 +98,7 @@ jobs:
         uses: appleboy/telegram-action@v0.1.1
         if: failure()
         with:
-          message: ❗ Failed to publish [${{ steps.vars.outputs.repo_name }}](https://github.com/${{ github.repository }}/actions) because of ${{ github.actor }}
+          message: ❗ Failed to publish [${{ steps.vars.outputs.repo_name }}](https://github.com/${{ github.repository }}/actions) because of [${{ github.actor }}](https://github.com/${{ github.actor }})
           format: markdown
           disable_web_page_preview: true
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
