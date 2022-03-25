@@ -1,6 +1,18 @@
 import { fetchBaseFee, subscribeToBaseFee } from "~/services/api";
 
-function handleBaseFeeUpdate(fee: number) {
+const USE_LONG_POLL = !!Number(process.env.REACT_APP_USE_LONG_POLL || 0);
+const REQUEST_INTERVAL = Number(process.env.REACT_APP_REQUEST_INTERVAL || 3000); // 3 seconds
+
+async function subscribe() {
+  if (USE_LONG_POLL) {
+    subscribeToBaseFee(handleBaseFeeUpdate, handleBaseFeeError, requestBaseFee);
+  } else {
+    await fetchBaseFee().then(handleBaseFeeUpdate).catch(handleBaseFeeError);
+    setTimeout(subscribe, REQUEST_INTERVAL);
+  }
+}
+
+async function handleBaseFeeUpdate(fee: number) {
   chrome.action.setBadgeText({ text: `${fee}` });
 }
 
@@ -16,8 +28,7 @@ function requestBaseFee() {
 chrome.action.setBadgeBackgroundColor({ color: "#21222D" });
 
 requestBaseFee();
-subscribeToBaseFee(handleBaseFeeUpdate, handleBaseFeeError, requestBaseFee);
-console.log("Subscribed");
+subscribe();
 
 // NOTE: Wake up event
 // https://stackoverflow.com/questions/66618136/persistent-service-worker-in-chrome-extension
