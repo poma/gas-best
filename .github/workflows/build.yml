@@ -17,12 +17,15 @@ jobs:
       - run: yarn install
       # - run: yarn test
       - run: yarn build
+      - run: yarn build:chrome
+      - run: yarn build:firefox
       - name: Telegram Failure Notification
         uses: appleboy/telegram-action@0.0.7
         if: failure()
         with:
           message: ❗ Build failed for [${{ github.repository }}](https://github.com/${{ github.repository }}/actions) because of ${{ github.actor }}
           format: markdown
+          disable_web_page_preview: true
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
@@ -58,6 +61,7 @@ jobs:
         with:
           message: 🚀 Published a [${{ steps.vars.outputs.repo_name }}](https://github.com/${{ github.repository }}) to [GitHub registry](https://github.com/${{ github.repository }}/pkgs/container/${{ steps.vars.outputs.repo_name }})
           format: markdown
+          disable_web_page_preview: true
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
@@ -67,5 +71,6 @@ jobs:
         with:
           message: ❗ Failed to publish [${{ steps.vars.outputs.repo_name }}](https://github.com/${{ github.repository }}/actions) because of ${{ github.actor }}
           format: markdown
+          disable_web_page_preview: true
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
