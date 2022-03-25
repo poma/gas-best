@@ -20,7 +20,7 @@ jobs:
       - run: yarn build:chrome
       - run: yarn build:firefox
       - name: Telegram Failure Notification
-        uses: appleboy/telegram-action@0.1.1
+        uses: appleboy/telegram-action@v0.1.1
         if: failure()
         with:
           message: ❗ Build failed for [${{ github.repository }}](https://github.com/${{ github.repository }}/actions) because of ${{ github.actor }}
@@ -57,7 +57,7 @@ jobs:
           tags: ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.tag }}
 
       - name: Telegram Notification
-        uses: appleboy/telegram-action@0.1.1
+        uses: appleboy/telegram-action@v0.1.1
         with:
           message: 🚀 Published a [${{ steps.vars.outputs.repo_name }}](https://github.com/${{ github.repository }}) to [GitHub registry](https://github.com/${{ github.repository }}/pkgs/container/${{ steps.vars.outputs.repo_name }})
           format: markdown
@@ -66,7 +66,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
       - name: Telegram Failure Notification
-        uses: appleboy/telegram-action@0.1.1
+        uses: appleboy/telegram-action@v0.1.1
         if: failure()
         with:
           message: ❗ Failed to publish [${{ steps.vars.outputs.repo_name }}](https://github.com/${{ github.repository }}/actions) because of ${{ github.actor }}
