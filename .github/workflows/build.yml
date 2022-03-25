@@ -1,5 +1,3 @@
-name: build
-
 on:
   push:
     branches: ['*']
@@ -73,14 +71,14 @@ jobs:
       - uses: nrwl/last-successful-commit-action@v1
         id: last_successful_commit
         with:
-          branch: 'master'
-          workflow_id: 'build.yml'
+          branch: ${{ env.GITHUB_REF_NAME }}
+          workflow_id: ${{ github.workflow }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Format changelog
         id: changelog
         run: |
-          STR="$(git log --pretty=format:'• %s' ${{ steps.last_successful_commit.outputs.commit_hash }}..HEAD)"
+          STR="$(git log --pretty=tformat:'• %an: %s' ${{ steps.last_successful_commit.outputs.commit_hash }}..HEAD | tac)"
           STR="${STR//'%'/'%25'}"
           STR="${STR//$'\n'/'%0A'}"
           STR="${STR//$'\r'/'%0D'}"
