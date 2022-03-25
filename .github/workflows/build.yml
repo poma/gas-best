@@ -16,9 +16,19 @@ jobs:
           node-version: 14
       - run: yarn install
       # - run: yarn test
-      - run: yarn build
       - run: yarn build:chrome
+      - name: Upload artifact `gas-tracker-chrome`
+        uses: actions/upload-artifact@v3
+        with:
+          name: gas-tracker-chrome
+          path: build
       - run: yarn build:firefox
+      - name: Upload artifact `gas-tracker-firefox`
+        uses: actions/upload-artifact@v3
+        with:
+          name: gas-tracker-firefox
+          path: build
+      - run: yarn build
       - name: Telegram Failure Notification
         uses: appleboy/telegram-action@v0.1.1
         if: failure()
