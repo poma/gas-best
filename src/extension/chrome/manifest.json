@@ -1,7 +1,7 @@
 {
   "name": "Gas Price Tracker",
   "description": "Gas Price Tracker",
-  "version": "1.0",
+  "version": "0.1.0",
   "manifest_version": 3,
   "icons": {
     "16": "images/icon16.png",
