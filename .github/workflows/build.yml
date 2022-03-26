@@ -68,7 +68,8 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.tag }}
 
-      - uses: nrwl/last-successful-commit-action@v1
+      - name: Find the last successful commit
+        uses: nrwl/last-successful-commit-action@v1
         id: last_successful_commit
         with:
           branch: ${{ env.GITHUB_REF_NAME }}
