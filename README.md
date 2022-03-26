@@ -50,6 +50,12 @@ Load it to browser by clicking `Load unpacked` in `chrome://extensions` (you nee
 Builds the Firefox extension to the `build` folder.\
 Load it to browser by clicking `Load Temporary Add-on` in `about:debugging#/runtime/this-firefox`.
 
+## Deployment
+
+Commits from `master` branch are automatically rolled out to https://stage.gas.best and from `stable` branch to https://gas.best.
+
+The docker image can be found in [GitHub Container Registry](https://github.com/poma/gas-tracker-ui/pkgs/container/gas-tracker-ui).
+
 ## Contributors
 
 Thanks goes to these wonderful people:
