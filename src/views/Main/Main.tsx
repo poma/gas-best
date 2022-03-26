@@ -47,7 +47,7 @@ function Main() {
                 onHideTooltip={() => setHidePanelTooltips(false)}
               >
                 <p>
-                  Base fee of <em>pending</em> block.
+                  Base fee of the <em>pending</em> block.
                 </p>
                 <p>
                   You are never charged more than the current block base fee, so
