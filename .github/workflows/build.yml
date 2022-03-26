@@ -1,5 +1,3 @@
-name: build
-
 on:
   push:
     branches: ['*']
@@ -11,18 +9,33 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: '14'
+          cache: 'yarn'
       - run: yarn install
+      # - run: yarn lint
       # - run: yarn test
       - run: yarn build
+      - run: yarn build:chrome
+      - name: Upload artifact `gas-tracker-chrome`
+        uses: actions/upload-artifact@v3
+        with:
+          name: gas-tracker-chrome
+          path: build
+      - run: yarn build:firefox
+      - name: Upload artifact `gas-tracker-firefox`
+        uses: actions/upload-artifact@v3
+        with:
+          name: gas-tracker-firefox
+          path: build
       - name: Telegram Failure Notification
-        uses: appleboy/telegram-action@0.0.7
+        uses: appleboy/telegram-action@v0.1.1
         if: failure()
         with:
-          message: ❗ Build failed for [${{ github.repository }}](https://github.com/${{ github.repository }}/actions) because of ${{ github.actor }}
+          message: ❗ Build failed for [${{ github.repository }}](https://github.com/${{ github.repository }}/actions) because of [${{ github.actor }}](https://github.com/${{ github.actor }})
           format: markdown
+          disable_web_page_preview: true
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
@@ -33,6 +46,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Set vars
         id: vars
@@ -53,19 +68,38 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.tag }}
 
-      - name: Telegram Notification
-        uses: appleboy/telegram-action@0.0.7
+      - uses: nrwl/last-successful-commit-action@v1
+        id: last_successful_commit
         with:
-          message: 🚀 Published a [${{ steps.vars.outputs.repo_name }}](https://github.com/${{ github.repository }}) to [GitHub registry](https://github.com/${{ github.repository }}/pkgs/container/${{ steps.vars.outputs.repo_name }})
+          branch: ${{ env.GITHUB_REF_NAME }}
+          workflow_id: ${{ github.workflow }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Format changelog
+        id: changelog
+        run: |
+          STR="$(git log --pretty=tformat:'• %an: %s' ${{ steps.last_successful_commit.outputs.commit_hash }}..HEAD | tac)"
+          STR="${STR//'%'/'%25'}"
+          STR="${STR//$'\n'/'%0A'}"
+          STR="${STR//$'\r'/'%0D'}"
+          STR="%0D%0A$STR"
+          echo "::set-output name=changelog::$STR"
+
+      - name: Telegram Notification
+        uses: appleboy/telegram-action@v0.1.1
+        with:
+          message: 🚀 Published a [${{ steps.vars.outputs.repo_name }}](https://github.com/${{ github.repository }}) to [GitHub registry](https://github.com/${{ github.repository }}/pkgs/container/${{ steps.vars.outputs.repo_name }})${{steps.changelog.outputs.changelog}}
           format: markdown
+          disable_web_page_preview: true
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
       - name: Telegram Failure Notification
-        uses: appleboy/telegram-action@0.0.7
+        uses: appleboy/telegram-action@v0.1.1
         if: failure()
         with:
-          message: ❗ Failed to publish [${{ steps.vars.outputs.repo_name }}](https://github.com/${{ github.repository }}/actions) because of ${{ github.actor }}
+          message: ❗ Failed to publish [${{ steps.vars.outputs.repo_name }}](https://github.com/${{ github.repository }}/actions) because of [${{ github.actor }}](https://github.com/${{ github.actor }})
           format: markdown
+          disable_web_page_preview: true
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}

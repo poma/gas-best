@@ -13,7 +13,7 @@ export interface FeeStatsPending {
 export type FeeStatsRecent = Array<[number, number]>;
 
 export interface FeeStatsForecast {
-  "15 min": number;
+  "5 min": number;
   "1 hour": number;
   "1 day": number;
 }

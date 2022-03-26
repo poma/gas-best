@@ -1,11 +1,21 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+const isExt = !!process.env.REACT_APP_EXTENSION;
 
 const Wrapper = styled.div`
   max-width: 420px;
+  min-width: 420px;
   background-color: ${(props) => props.theme.bg.secondary};
-  border-radius: 24px;
   padding: 20px 24px 24px;
   margin: 50px auto;
+  border-radius: 24px;
+
+  ${() =>
+    isExt &&
+    css`
+      margin: 0;
+      border-radius: 0;
+    `};
 `;
 
 const Header = styled.header`

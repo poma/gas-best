@@ -7,8 +7,8 @@ import Text from "~/components/Text";
 import Tooltip from "~/components/Tooltip";
 
 const ETH_TRANSFER_GAS = 21000;
-const ERC20_TRANSFER_GAS = 50000;
-const DEX_TRADE_GAS = 175000;
+const ERC20_TRANSFER_GAS = 54000;
+const DEX_TRADE_GAS = 185000;
 
 interface FeePanelProps {
   value?: number;

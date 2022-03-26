@@ -56,9 +56,9 @@ function Main() {
           hideTooltip={hidePanelTooltips}
         />
         <FeePanel
-          value={feeStats?.forecast["15 min"]}
+          value={feeStats?.forecast["5 min"]}
           ethPrice={feeStats?.ethPrice}
-          label="<15 min"
+          label="<5 min"
           hideTooltip={hidePanelTooltips}
         />
         <FeePanel

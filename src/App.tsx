@@ -2,6 +2,7 @@ import { useState } from "react";
 import Main from "./views/Main";
 import Container from "./components/Container";
 import Theme from "./styles/Theme";
+import ExtensionStyle from "./styles/ExtensionStyle";
 // import NotificationButton from "./components/NotificationButton";
 // import PasteButton from "./components/PasteButton";
 
@@ -26,6 +27,7 @@ function App() {
   return (
     <div className="App">
       <Theme>
+        <ExtensionStyle />
         <Container
           title={titles[page]}
           // nav={

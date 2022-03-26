@@ -1,0 +1,64 @@
+{
+  "projectName": "gas-tracker-ui",
+  "projectOwner": "poma",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "none",
+  "types": {
+    "backend": {
+      "symbol": "💻",
+      "description": "Backend"
+    },
+    "prediction": {
+      "symbol": "🧠",
+      "description": "Price prediction engine"
+    }
+  },
+  "contributors": [
+    {
+      "login": "poma",
+      "name": "Roman Semenov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2109710?v=4",
+      "profile": "https://github.com/poma",
+      "contributions": [
+        "backend",
+        "infra",
+        "financial",
+        "design"
+      ]
+    },
+    {
+      "login": "oxor-io",
+      "name": "Oxorio",
+      "avatar_url": "https://avatars.githubusercontent.com/u/53340101?v=4",
+      "profile": "https://oxor.io",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "kotokrad",
+      "name": "Evgeniy Voichenko",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3849707?v=4",
+      "profile": "https://github.com/kotokrad",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "fomalhaut88",
+      "name": "Alexander Khlebushchev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6025172?v=4",
+      "profile": "https://fomalhaut.su/",
+      "contributions": [
+        "prediction"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
