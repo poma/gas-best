@@ -13,9 +13,26 @@ async function subscribe() {
   }
 }
 
+async function showNotification(fee: number) {
+  const { feeNotification } = await chrome.storage.local.get("feeNotification");
+  if (feeNotification?.target && fee <= feeNotification.target) {
+    if (feeNotification.once) {
+      await chrome.storage.local.remove("feeNotification");
+    }
+
+    chrome.notifications.create("gas-tracker-fee-notification", {
+      title: "Gas Tracker",
+      message: `Current base fee is ${fee} Gwei`,
+      iconUrl: "images/icon48.png",
+      type: "basic",
+    });
+  }
+}
+
 async function handleBaseFeeUpdate(fee: number) {
   await chrome.storage.local.set({ baseFeeUpdated: Date.now() });
   chrome.action.setBadgeText({ text: `${fee}` });
+  showNotification(fee);
 }
 
 async function handleBaseFeeError(error: Error) {

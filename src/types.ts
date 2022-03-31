@@ -40,3 +40,8 @@ export interface GasPriceHistoryChartDataEntry {
 }
 
 export type ChartDuration = "1d" | "1w" | "1m";
+
+export interface FeeNotificationSettings {
+  target: BaseFee | null;
+  once: boolean;
+}

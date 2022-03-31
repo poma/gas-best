@@ -22,5 +22,6 @@
       "24": "images/icon24.png",
       "32": "images/icon32.png"
     }
-  }
+  },
+  "permissions": ["storage", "notifications"]
 }

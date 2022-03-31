@@ -1,43 +1,53 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Main from "./views/Main";
 import Container from "./components/Container";
 import Theme from "./styles/Theme";
 import ExtensionStyle from "./styles/ExtensionStyle";
-// import NotificationButton from "./components/NotificationButton";
+import NotificationButton from "./components/NotificationButton";
 // import PasteButton from "./components/PasteButton";
+import NotificationModal from "./components/NotificationModal";
+import useModal from "./hooks/useModal";
 
-type Page = "main" | "test";
+type Page = "main";
 
 const titles: Record<Page, string> = {
   main: "Recommended gas prices",
-  test: "Test",
 };
 
 function App() {
   const [page, _setPage] = useState<Page>("main");
+  const { modal, openModal } = useModal();
 
-  const renderPages = () => {
+  const renderPage = () => {
     switch (page) {
       case "main":
         return <Main />;
-      case "test":
-        return <div>test</div>;
     }
   };
+
+  const renderModal = () => {
+    switch (modal) {
+      case "notification":
+        return <NotificationModal />;
+      case "none":
+        return null;
+    }
+  };
+
   return (
     <div className="App">
       <Theme>
         <ExtensionStyle />
         <Container
           title={titles[page]}
-          // nav={
-          //   <React.Fragment>
-          //     <PasteButton onClick={() => setPage("main")} />
-          //     <NotificationButton onClick={() => setPage("test")} />
-          //   </React.Fragment>
-          // }
+          nav={
+            <React.Fragment>
+              <NotificationButton onClick={() => openModal("notification")} />
+            </React.Fragment>
+          }
         >
-          {renderPages()}
+          {renderPage()}
+          {renderModal()}
         </Container>
       </Theme>
     </div>

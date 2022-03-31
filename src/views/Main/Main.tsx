@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Info from "~/components/Info";
+import useFeeNotification from "~/hooks/useFeeNotification";
 import useFeeStats from "~/hooks/useFeeStats";
 import BaseFeePanel from "./components/BaseFeePanel";
 import FeePanel from "./components/FeePanel";
@@ -29,6 +30,9 @@ const Bottom = styled.div``;
 function Main() {
   const { data: feeStats, error: _feeStatsError } = useFeeStats();
   const [hidePanelTooltips, setHidePanelTooltips] = useState(false);
+
+  useFeeNotification(feeStats?.pending?.fee);
+
   return (
     <Body>
       <Top>

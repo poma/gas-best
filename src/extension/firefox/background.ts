@@ -12,8 +12,32 @@ async function subscribe() {
   }
 }
 
+function createNotification(fee: number) {
+  chrome.notifications.create("gas-tracker-fee-notification", {
+    title: "Gas Tracker",
+    message: `Current base fee is <b>${fee}</b> Gwei`,
+    iconUrl: "images/icon48.png",
+    type: "basic",
+  });
+}
+
+function showNotification(fee: number) {
+  chrome.storage.local.get("feeNotification", ({ feeNotification }) => {
+    if (feeNotification?.target && fee <= feeNotification.target) {
+      if (feeNotification.once) {
+        chrome.storage.local.remove("feeNotification", () =>
+          createNotification(fee)
+        );
+      } else {
+        createNotification(fee);
+      }
+    }
+  });
+}
+
 function handleBaseFeeUpdate(fee: number) {
   chrome.browserAction.setBadgeText({ text: `${fee}` });
+  showNotification(fee);
 }
 
 function handleBaseFeeError(error: Error) {
