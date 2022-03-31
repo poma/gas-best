@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useLocalStorage } from "react-use";
 import styled from "styled-components";
 import Panel from "~/components/Panel";
 import Text from "~/components/Text";
@@ -49,8 +50,13 @@ const DurationButton = styled.button<{ selected: boolean }>`
 `;
 
 const GasPriceHistoryPanel: React.FC = () => {
-  const [duration, setDuration] = useState<ChartDuration>("1d");
-  const { data, error: _ } = useGasPriceHistory(duration);
+  const [duration, setDuration] = useLocalStorage<ChartDuration>(
+    "history-chart-duration",
+    "1d"
+  );
+
+  const { data, error: _ } = useGasPriceHistory(duration ?? "1d");
+
   return (
     <StyledPanel>
       <Header>
