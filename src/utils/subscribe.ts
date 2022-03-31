@@ -21,7 +21,7 @@ function subscribe(
 
       if (options.cancel) return;
 
-      if (response.status === 502) {
+      if (response.status === 504) {
         // Connection timeout
         // happens when the connection was pending for too long
         // let's reconnect
