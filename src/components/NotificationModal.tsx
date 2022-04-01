@@ -98,7 +98,6 @@ const CheckboxLabel = styled.label<{ disabled: boolean }>`
   display: grid;
   grid-template-columns: 1em auto;
   gap: 1em;
-  padding-bottom: 8px;
   line-height: 1.2;
   cursor: ${(props) => (props.disabled ? "default" : "pointer")};
 `;
@@ -207,7 +206,11 @@ const NotificationModal: React.FC = () => {
     const isDenied = permission === "denied";
 
     if (!isExt && (isPrompt || isDenied)) {
-      return <Text variant="warning">Please allow browser notifications</Text>;
+      return (
+        <Text variant="warning" style={{ paddingTop: 8 }}>
+          Please allow browser notifications
+        </Text>
+      );
     }
 
     return null;
