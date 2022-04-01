@@ -3,7 +3,9 @@ import { useTimeoutFn } from "react-use";
 import { fetchBaseFee, subscribeToBaseFee } from "~/services/api";
 import { BaseFee } from "~/types";
 
-const REQUEST_INTERVAL = Number(process.env.REACT_APP_REQUEST_INTERVAL || 3000);
+const REQUEST_INTERVAL_MS = Number(
+  process.env.REACT_APP_REQUEST_INTERVAL || 3000
+);
 
 function useIntervalBaseFee() {
   const [data, setData] = useState<BaseFee>();
@@ -11,7 +13,7 @@ function useIntervalBaseFee() {
   const [timestamp, setTimestamp] = useState(0);
   const [_, cancel, resetTimeout] = useTimeoutFn(
     () => setTimestamp(Date.now()),
-    REQUEST_INTERVAL
+    REQUEST_INTERVAL_MS
   );
 
   const clearError = () => setError(undefined);

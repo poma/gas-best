@@ -8,8 +8,8 @@ import {
 } from "~/types";
 import formatDateTime from "~/utils/formatDateTime";
 
-const UPDATE_INTERVAL = 5 * 60 * 1000;
-const RETRY_INTERVAL = 3000;
+const UPDATE_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
+const RETRY_INTERVAL_MS = 3000; // 3 seconds
 
 const expandData = (
   data: GasPriceHistoryData
@@ -36,7 +36,7 @@ function useGasPriceHistory(duration: ChartDuration) {
     "1m": { updated: 0, data: [] },
   });
 
-  const interval = error ? RETRY_INTERVAL : UPDATE_INTERVAL;
+  const interval = error ? RETRY_INTERVAL_MS : UPDATE_INTERVAL_MS;
 
   const updateCache = useCallback(
     (data: GasPriceHistoryChartDataEntry[]) => {
@@ -54,7 +54,7 @@ function useGasPriceHistory(duration: ChartDuration) {
   useEffect(() => {
     if (
       !cache.current[duration].data.length ||
-      Date.now() - cache.current[duration].updated > UPDATE_INTERVAL
+      Date.now() - cache.current[duration].updated > UPDATE_INTERVAL_MS
     ) {
       fetchGasPriceHistory(duration)
         .then(expandData)

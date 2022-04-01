@@ -3,7 +3,7 @@ type ErrorHandler = (err: Error) => void;
 type RetryHandler = () => void;
 type CancelFunc = () => void;
 
-const RETRY_INTERVAL = 3000;
+const RETRY_INTERVAL_MS = 3000;
 
 function subscribe(
   url: string,
@@ -30,7 +30,7 @@ function subscribe(
         // Show Error
         onError(new Error(response.statusText));
         // Reconnect in few seconds
-        await new Promise((resolve) => setTimeout(resolve, RETRY_INTERVAL));
+        await new Promise((resolve) => setTimeout(resolve, RETRY_INTERVAL_MS));
         onRetry();
         await subscribeHelper();
       } else {
@@ -42,7 +42,7 @@ function subscribe(
       // Show Error
       onError(e as Error);
       // Reconnect in few seconds
-      await new Promise((resolve) => setTimeout(resolve, RETRY_INTERVAL));
+      await new Promise((resolve) => setTimeout(resolve, RETRY_INTERVAL_MS));
       onRetry();
       await subscribeHelper();
     }
