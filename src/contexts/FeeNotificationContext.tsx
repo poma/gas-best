@@ -78,12 +78,9 @@ export const FeeNotificationContextProviderExt: React.FC = ({ children }) => {
   };
 
   const clearNotification = () =>
-    chrome.storage.local.get("feeNotification", ({ feeNotification }) => {
-      const newState = { ...feeNotification, target: null };
-      chrome.storage.local.set({ feeNotification: newState }, () =>
-        setState(newState)
-      );
-    });
+    chrome.storage.local.set({ feeNotification: initialState }, () =>
+      setState(initialState)
+    );
 
   return (
     <FeeNotificationContext.Provider

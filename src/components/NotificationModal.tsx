@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { useClickAway, usePermission } from "react-use";
+import { useClickAway, useLocalStorage, usePermission } from "react-use";
 import { rgba } from "polished";
 import styled from "styled-components";
 import useFeeNotificationSetting from "~/hooks/useFeeNotificationSettings";
@@ -170,7 +170,10 @@ const NotificationModal: React.FC = () => {
   const [price, setPrice] = useState(
     isActive ? String(notification.target) : ""
   );
-  const [once, setOnce] = useState(notification.once);
+  const [once, setOnce] = useLocalStorage(
+    "fee-notification-once",
+    notification.once
+  );
 
   const { closeModal } = useModal();
   const modalRef = useRef(null);
@@ -190,7 +193,7 @@ const NotificationModal: React.FC = () => {
         clearNotification();
       } else {
         const parsed = parseInt(price, 10);
-        setNotification({ target: parsed, once });
+        setNotification({ target: parsed, once: !!once });
         setFormSubmitted(true);
       }
     },
@@ -234,7 +237,7 @@ const NotificationModal: React.FC = () => {
           <Checkbox
             disabled={isActive}
             type="checkbox"
-            checked={once}
+            checked={isActive ? notification.once : once}
             onChange={(event) => setOnce(event.target.checked)}
             tabIndex={3}
           />
