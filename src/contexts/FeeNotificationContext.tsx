@@ -6,17 +6,24 @@ interface FeeNotificationContextAPI {
   notification: FeeNotificationSettings;
   setNotification: (notification: FeeNotificationSettings) => void;
   clearNotification: () => void;
+
+  // Web only
+  lastNotificationTime?: number;
+  updateLastNotificationTime: () => void;
 }
 
 const isExt = !!process.env.REACT_APP_EXTENSION;
 
 const initialState: FeeNotificationSettings = { target: null, once: false };
+const noop = () => {};
 
 export const FeeNotificationContext =
   React.createContext<FeeNotificationContextAPI>({
     notification: initialState,
-    setNotification: () => {},
-    clearNotification: () => {},
+    setNotification: noop,
+    clearNotification: noop,
+    lastNotificationTime: undefined,
+    updateLastNotificationTime: noop,
   });
 
 // Web
@@ -25,17 +32,26 @@ export const FeeNotificationContext =
 export const FeeNotificationContextProviderWeb: React.FC = ({ children }) => {
   const [notification, setNotificationInternal, clearNotification] =
     useLocalStorage<FeeNotificationSettings>("fee-notification");
+  const [
+    lastNotificationTime,
+    setLastNotificationTime,
+    clearLastNotificationTime,
+  ] = useLocalStorage<number>("fee-notification-last");
+
+  const updateLastNotificationTime = () => setLastNotificationTime(Date.now());
   const permission = usePermission({ name: "notifications" });
 
   const setNotification = useCallback(
     (settings: FeeNotificationSettings) => {
       if (permission === "granted") {
         setNotificationInternal(settings);
+        clearLastNotificationTime();
       } else if (permission !== "denied") {
         Notification.requestPermission()
           .then((status) => {
             if (status === "granted") {
               setNotificationInternal(settings);
+              clearLastNotificationTime();
             }
           })
           .catch((e) => console.info("Notification permission error: ", e));
@@ -43,7 +59,7 @@ export const FeeNotificationContextProviderWeb: React.FC = ({ children }) => {
         console.info("Notification permission is denied!");
       }
     },
-    [permission, setNotificationInternal]
+    [permission, setNotificationInternal, clearLastNotificationTime]
   );
 
   return (
@@ -52,6 +68,8 @@ export const FeeNotificationContextProviderWeb: React.FC = ({ children }) => {
         notification: notification ?? initialState,
         setNotification,
         clearNotification,
+        lastNotificationTime,
+        updateLastNotificationTime,
       }}
     >
       {children}
@@ -63,28 +81,35 @@ export const FeeNotificationContextProviderWeb: React.FC = ({ children }) => {
 // ======================================
 
 export const FeeNotificationContextProviderExt: React.FC = ({ children }) => {
-  const [state, setState] = useState<FeeNotificationSettings>(initialState);
+  const [notification, setNotificationInternal] =
+    useState<FeeNotificationSettings>(initialState);
 
   useEffect(() => {
-    chrome.storage.local.get("feeNotification", ({ feeNotification }) =>
-      setState(feeNotification ?? initialState)
-    );
+    chrome.storage.local.get("feeNotification", ({ feeNotification }) => {
+      setNotificationInternal(feeNotification ?? initialState);
+    });
   }, []);
 
-  const setNotification = (feeNotification: FeeNotificationSettings) => {
-    chrome.storage.local.set({ feeNotification }, () =>
-      setState(feeNotification)
+  const setNotification = (settings: FeeNotificationSettings) => {
+    chrome.storage.local.set(
+      { feeNotification: settings, feeNotificationLast: null },
+      () => setNotificationInternal(settings)
     );
   };
 
   const clearNotification = () =>
     chrome.storage.local.set({ feeNotification: initialState }, () =>
-      setState(initialState)
+      setNotificationInternal(initialState)
     );
 
   return (
     <FeeNotificationContext.Provider
-      value={{ notification: state, setNotification, clearNotification }}
+      value={{
+        notification,
+        setNotification,
+        clearNotification,
+        updateLastNotificationTime: noop,
+      }}
     >
       {children}
     </FeeNotificationContext.Provider>

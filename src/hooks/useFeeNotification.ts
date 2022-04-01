@@ -4,28 +4,58 @@ import useFeeNotificationSetting from "./useFeeNotificationSettings";
 import { BaseFee } from "~/types";
 
 const isExt = !!process.env.REACT_APP_EXTENSION;
+const NOTIFICATION_INTERVAL_MS =
+  Number(process.env.REACT_APP_NOTIFICATION_INTERVAL_MINUTES || 60) * 60 * 1000; // 1 hour
 
-function useFeeNotification(current: BaseFee | undefined) {
-  const { notification, clearNotification } = useFeeNotificationSetting();
+function useFeeNotification(currentFee: BaseFee | undefined) {
+  const {
+    notification,
+    clearNotification,
+    lastNotificationTime,
+    updateLastNotificationTime,
+  } = useFeeNotificationSetting();
 
   const state = usePermission({ name: "notifications" });
 
   useEffect(() => {
-    if (state !== "granted") {
-      console.info("Notification permission is not granted!");
+    if (!notification.target || !currentFee) {
+      return;
     }
 
-    if (notification.target && current && current <= notification.target) {
+    if (state === "") {
+      console.info("Loading notifications...");
+      return;
+    }
+
+    if (state !== "granted") {
+      console.info("Notification permission is not granted!");
+      return;
+    }
+
+    const isEnoughTimePassed =
+      !lastNotificationTime ||
+      Date.now() - lastNotificationTime >= NOTIFICATION_INTERVAL_MS;
+
+    if (isEnoughTimePassed && currentFee <= notification.target) {
       if (notification.once) {
         clearNotification();
       }
+
+      updateLastNotificationTime();
       new Notification("Gas Tracker", {
-        body: `Current base fee is ${current} Gwei`,
+        body: `Current base fee is ${currentFee} Gwei`,
         icon: "/images/icon48.png",
         tag: "gas-tracker-fee-notification",
       });
     }
-  }, [state, current, notification, clearNotification]);
+  }, [
+    state,
+    currentFee,
+    notification,
+    clearNotification,
+    lastNotificationTime,
+    updateLastNotificationTime,
+  ]);
 }
 
 // Remove in extension
