@@ -12,7 +12,7 @@ function useFeeNotification(current: BaseFee | undefined) {
 
   useEffect(() => {
     if (state !== "granted") {
-      console.info("Notification permission is not granted");
+      console.info("Notification permission is not granted!");
     }
 
     if (notification.target && current && current <= notification.target) {
@@ -20,7 +20,7 @@ function useFeeNotification(current: BaseFee | undefined) {
         clearNotification();
       }
       new Notification("Gas Tracker", {
-        body: `Current base fee is <b>${current}</b> Gwei`,
+        body: `Current base fee is ${current} Gwei`,
         icon: "/images/icon48.png",
         tag: "gas-tracker-fee-notification",
       });

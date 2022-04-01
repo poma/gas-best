@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { useClickAway } from "react-use";
+import { useClickAway, usePermission } from "react-use";
 import { rgba } from "polished";
 import styled from "styled-components";
 import useFeeNotificationSetting from "~/hooks/useFeeNotificationSettings";
@@ -98,6 +98,7 @@ const CheckboxLabel = styled.label<{ disabled: boolean }>`
   display: grid;
   grid-template-columns: 1em auto;
   gap: 1em;
+  padding-bottom: 8px;
   line-height: 1.2;
   cursor: ${(props) => (props.disabled ? "default" : "pointer")};
 `;
@@ -163,6 +164,8 @@ const NotificationModal: React.FC = () => {
   const { notification, setNotification, clearNotification } =
     useFeeNotificationSetting();
   const isActive = useMemo(() => !!notification.target, [notification]);
+  const permission = usePermission({ name: "notifications" });
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const [price, setPrice] = useState(
     isActive ? String(notification.target) : ""
@@ -187,23 +190,25 @@ const NotificationModal: React.FC = () => {
         clearNotification();
       } else {
         const parsed = parseInt(price, 10);
-        if (isExt) {
-          setNotification({ target: parsed, once });
-        } else {
-          Notification.requestPermission()
-            .then((status) => {
-              if (status === "granted") {
-                setNotification({ target: parsed, once });
-              }
-            })
-            .catch((e) => console.info("Notification permission error: ", e));
-        }
+        setNotification({ target: parsed, once });
+        setFormSubmitted(true);
       }
     },
     [isActive, price, once, setNotification, clearNotification]
   );
 
   useEffect(() => inputRef.current?.focus(), [inputRef]);
+
+  const NotificationWarnings = useCallback(() => {
+    const isPrompt = formSubmitted && permission === "prompt";
+    const isDenied = permission === "denied";
+
+    if (!isExt && (isPrompt || isDenied)) {
+      return <Text variant="warning">Please allow browser notifications</Text>;
+    }
+
+    return null;
+  }, [formSubmitted, permission]);
 
   return (
     <Modal>
@@ -235,6 +240,7 @@ const NotificationModal: React.FC = () => {
           />
           <Text>Notify once</Text>
         </CheckboxLabel>
+        <NotificationWarnings />
       </Content>
     </Modal>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useInterval } from "react-use";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import InlineLoader from "~/components/InlineLoader";
 import Panel from "~/components/Panel";
 import Stats from "~/components/Stats";
@@ -22,7 +22,11 @@ const LastBlockLabel = styled(Text)`
 `;
 
 const LastBlockTime = styled.em<{ highlight: boolean }>`
-  color: ${(props) => (props.highlight ? "#ee241d !important" : "inherit")};
+  ${(props) =>
+    props.highlight &&
+    css`
+      color: ${props.theme.fg.danger} !important;
+    `};
 `;
 
 const LastBlockStats = styled(Stats)`

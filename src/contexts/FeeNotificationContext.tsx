@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useLocalStorage } from "react-use";
+import React, { useCallback, useEffect, useState } from "react";
+import { useLocalStorage, usePermission } from "react-use";
 import { FeeNotificationSettings } from "~/types";
 
 interface FeeNotificationContextAPI {
@@ -23,8 +23,28 @@ export const FeeNotificationContext =
 // ======================================
 
 export const FeeNotificationContextProviderWeb: React.FC = ({ children }) => {
-  const [notification, setNotification, clearNotification] =
+  const [notification, setNotificationInternal, clearNotification] =
     useLocalStorage<FeeNotificationSettings>("fee-notification");
+  const permission = usePermission({ name: "notifications" });
+
+  const setNotification = useCallback(
+    (settings: FeeNotificationSettings) => {
+      if (permission === "granted") {
+        setNotificationInternal(settings);
+      } else if (permission !== "denied") {
+        Notification.requestPermission()
+          .then((status) => {
+            if (status === "granted") {
+              setNotificationInternal(settings);
+            }
+          })
+          .catch((e) => console.info("Notification permission error: ", e));
+      } else {
+        console.info("Notification permission is denied!");
+      }
+    },
+    [permission, setNotificationInternal]
+  );
 
   return (
     <FeeNotificationContext.Provider
