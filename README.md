@@ -69,6 +69,7 @@ Thanks goes to these wonderful people:
     <td align="center"><a href="https://oxor.io"><img src="https://avatars.githubusercontent.com/u/53340101?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Oxorio</b></sub></a><br /><a href="https://github.com/poma/gas-tracker-ui/commits?author=oxor-io" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/kotokrad"><img src="https://avatars.githubusercontent.com/u/3849707?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Evgeniy Voichenko</b></sub></a><br /><a href="https://github.com/poma/gas-tracker-ui/commits?author=kotokrad" title="Code">💻</a></td>
     <td align="center"><a href="https://fomalhaut.su/"><img src="https://avatars.githubusercontent.com/u/6025172?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Alexander Khlebushchev</b></sub></a><br /><a href="#prediction-fomalhaut88" title="Price prediction engine">🧠</a></td>
+    <td align="center"><a href="https://github.com/daria-sa"><img src="https://avatars.githubusercontent.com/u/56318841?v=4?s=100" width="100px;" alt=""/><br /><sub><b>daria-sa</b></sub></a><br /><a href="#prediction-daria-sa" title="Price prediction engine">🧠</a></td>
   </tr>
 </table>
 
