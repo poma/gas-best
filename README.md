@@ -1,4 +1,4 @@
-# Gas price tracker [![build](https://github.com/poma/gas-tracker-ui/actions/workflows/build.yml/badge.svg)](https://github.com/poma/gas-tracker-ui/actions/workflows/build.yml)
+# GasBest [![build](https://github.com/poma/gas-best/actions/workflows/build.yml/badge.svg)](https://github.com/poma/gas-best/actions/workflows/build.yml)
 
 <img width="458" alt="image" src="https://user-images.githubusercontent.com/2109710/158978962-5aab5bdd-a680-441f-877e-6078d5ceb799.png">
 
@@ -54,7 +54,7 @@ Load it to browser by clicking `Load Temporary Add-on` in `about:debugging#/runt
 
 Commits from `master` branch are automatically rolled out to https://stage.gas.best and from `stable` branch to https://gas.best.
 
-The docker image can be found in [GitHub Container Registry](https://github.com/poma/gas-tracker-ui/pkgs/container/gas-tracker-ui).
+The docker image can be found in [GitHub Container Registry](https://github.com/poma/gas-best/pkgs/container/gas-best).
 
 ## Contributors
 
@@ -66,8 +66,8 @@ Thanks goes to these wonderful people:
 <table>
   <tr>
     <td align="center"><a href="https://github.com/poma"><img src="https://avatars.githubusercontent.com/u/2109710?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Roman Semenov</b></sub></a><br /><a href="#backend-poma" title="Backend">💻</a> <a href="#infra-poma" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#financial-poma" title="Financial">💵</a> <a href="#design-poma" title="Design">🎨</a></td>
-    <td align="center"><a href="https://oxor.io"><img src="https://avatars.githubusercontent.com/u/53340101?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Oxorio</b></sub></a><br /><a href="https://github.com/poma/gas-tracker-ui/commits?author=oxor-io" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/kotokrad"><img src="https://avatars.githubusercontent.com/u/3849707?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Evgeniy Voichenko</b></sub></a><br /><a href="https://github.com/poma/gas-tracker-ui/commits?author=kotokrad" title="Code">💻</a></td>
+    <td align="center"><a href="https://oxor.io"><img src="https://avatars.githubusercontent.com/u/53340101?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Oxorio</b></sub></a><br /><a href="https://github.com/poma/gas-best/commits?author=oxor-io" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/kotokrad"><img src="https://avatars.githubusercontent.com/u/3849707?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Evgeniy Voichenko</b></sub></a><br /><a href="https://github.com/poma/gas-best/commits?author=kotokrad" title="Code">💻</a></td>
     <td align="center"><a href="https://fomalhaut.su/"><img src="https://avatars.githubusercontent.com/u/6025172?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Alexander Khlebushchev</b></sub></a><br /><a href="#prediction-fomalhaut88" title="Price prediction engine">🧠</a></td>
     <td align="center"><a href="https://github.com/daria-sa"><img src="https://avatars.githubusercontent.com/u/56318841?v=4?s=100" width="100px;" alt=""/><br /><sub><b>daria-sa</b></sub></a><br /><a href="#prediction-daria-sa" title="Price prediction engine">🧠</a></td>
   </tr>

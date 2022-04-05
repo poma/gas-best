@@ -18,16 +18,16 @@ jobs:
       # - run: yarn test
       - run: yarn build
       - run: yarn build:chrome
-      - name: Upload artifact `gas-tracker-chrome`
+      - name: Upload artifact `gas-best-chrome`
         uses: actions/upload-artifact@v3
         with:
-          name: gas-tracker-chrome
+          name: gas-best-chrome
           path: build
       - run: yarn build:firefox
-      - name: Upload artifact `gas-tracker-firefox`
+      - name: Upload artifact `gas-best-firefox`
         uses: actions/upload-artifact@v3
         with:
-          name: gas-tracker-firefox
+          name: gas-best-firefox
           path: build
       - name: Telegram Failure Notification
         uses: appleboy/telegram-action@v0.1.1

@@ -42,10 +42,10 @@ function useFeeNotification(currentFee: BaseFee | undefined) {
       }
 
       updateLastNotificationTime();
-      new Notification("Gas Tracker", {
+      new Notification("GasBest", {
         body: `Current base fee is ${currentFee} Gwei`,
         icon: "/images/icon48.png",
-        tag: "gas-tracker-fee-notification",
+        tag: "gas-best-fee-notification",
       });
     }
   }, [

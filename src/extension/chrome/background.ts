@@ -35,8 +35,8 @@ async function showNotification(fee: number) {
     }
 
     await chrome.storage.local.set({ feeNotificationLast: Date.now() });
-    chrome.notifications.create("gas-tracker-fee-notification", {
-      title: "Gas Tracker",
+    chrome.notifications.create("gas-best-fee-notification", {
+      title: "GasBest",
       message: `Current base fee is ${fee} Gwei`,
       iconUrl: "images/icon48.png",
       type: "basic",
