@@ -31,7 +31,11 @@ module.exports = {
         ? [
             new CopyPlugin({
               patterns: [
-                { from: `src/extension/${EXT}/manifest.json`, to: "" },
+                { 
+                  from: `src/extension/${EXT}/manifest.json`, 
+                  to: "",
+                  transform: (content) => JSON.stringify({ ...JSON.parse(content), version: require("./package.json").version }, null, 2),
+                },
               ],
             }),
           ]

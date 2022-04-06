@@ -1,7 +1,7 @@
 {
   "name": "GasBest Gas Price Tracker",
   "description": "GasBest Gas Price Tracker",
-  "version": "0.2.0",
+  "version": "0.0.0",
   "manifest_version": 3,
   "icons": {
     "16": "images/icon16.png",
