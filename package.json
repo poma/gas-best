@@ -27,8 +27,8 @@
   "scripts": {
     "start": "BROWSER=none craco start",
     "build": "craco build",
-    "build:chrome": "REACT_APP_EXTENSION=chrome INLINE_RUNTIME_CHUNK=false craco build",
-    "build:firefox": "REACT_APP_EXTENSION=firefox INLINE_RUNTIME_CHUNK=false craco build",
+    "build:chrome": "REACT_APP_EXTENSION=chrome INLINE_RUNTIME_CHUNK=false REACT_APP_API_HTTP_ENDPOINT=https://gas.best craco build",
+    "build:firefox": "REACT_APP_EXTENSION=firefox INLINE_RUNTIME_CHUNK=false REACT_APP_API_HTTP_ENDPOINT=https://gas.best craco build",
     "test": "craco test",
     "eject": "craco eject"
   },
