@@ -1,12 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import {
-  Bar,
-  BarChart,
-  Rectangle,
-  ResponsiveContainer,
-  Tooltip as RechartsTooltip,
-} from "recharts";
+import { Bar, BarChart, Rectangle, Tooltip as RechartsTooltip } from "recharts";
 import styled, { useTheme } from "styled-components";
 import ChartLoader from "~/components/ChartLoader";
 import { ChartTooltip } from "~/components/ChartTooltip";
@@ -45,76 +39,74 @@ const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
     }
   };
 
-  return (
-    <ResponsiveContainer width="100%" height={26}>
-      {data.length > 0 ? (
-        <StyledBarChart
-          data={data}
-          onMouseMove={(data, _event) => {
-            if (data?.activeTooltipIndex !== undefined) {
-              updateSelectedCell(data.activeTooltipIndex);
-            } else {
-              updateSelectedCell(-1);
-            }
-          }}
-          onMouseLeave={() => updateSelectedCell(-1)}
-          margin={{
-            top: 0,
-            right: 0,
-            left: 0,
-            bottom: 0,
-          }}
-          barSize={2}
-        >
-          <Bar
-            dataKey="fee"
-            name="Base fee"
-            fill={theme.accent.primary}
-            radius={2}
-            // HACK: remove data update animation
-            onAnimationEnd={() => setAnimationDisabled(true)}
-            animationDuration={animationDisabled ? 1 : 600}
-            shape={(props: any) => {
-              const { x, y, height, width, radius, index } = props;
-              return (
-                <React.Fragment>
-                  <Rectangle
-                    {...props}
-                    fill={
-                      selectedCell === index
-                        ? theme.accent.primary
-                        : theme.bg.tertiary
-                    }
-                  />
-                  <Rectangle
-                    x={x}
-                    y={y}
-                    height={height}
-                    width={width}
-                    radius={radius}
-                    className="chart-fill"
-                    fill={theme.accent.primary}
-                  />
-                </React.Fragment>
-              );
-            }}
-          />
-          <RechartsTooltip
-            cursor={false}
-            allowEscapeViewBox={{ y: true }}
-            content={({ active, payload }) => (
-              <ChartTooltip
-                active={active}
-                payload={payload}
-                titleFormatter={(payload: any) => payload.date}
+  return data.length > 0 ? (
+    <StyledBarChart
+      data={data}
+      onMouseMove={(data, _event) => {
+        if (data?.activeTooltipIndex !== undefined) {
+          updateSelectedCell(data.activeTooltipIndex);
+        } else {
+          updateSelectedCell(-1);
+        }
+      }}
+      onMouseLeave={() => updateSelectedCell(-1)}
+      width={160}
+      height={26}
+      margin={{
+        top: 0,
+        right: 0,
+        left: 0,
+        bottom: 0,
+      }}
+      barSize={2}
+    >
+      <Bar
+        dataKey="fee"
+        name="Base fee"
+        fill={theme.accent.primary}
+        radius={2}
+        // HACK: remove data update animation
+        onAnimationEnd={() => setAnimationDisabled(true)}
+        animationDuration={animationDisabled ? 1 : 600}
+        shape={(props: any) => {
+          const { x, y, height, width, radius, index } = props;
+          return (
+            <React.Fragment>
+              <Rectangle
+                {...props}
+                fill={
+                  selectedCell === index
+                    ? theme.accent.primary
+                    : theme.bg.tertiary
+                }
               />
-            )}
+              <Rectangle
+                x={x}
+                y={y}
+                height={height}
+                width={width}
+                radius={radius}
+                className="chart-fill"
+                fill={theme.accent.primary}
+              />
+            </React.Fragment>
+          );
+        }}
+      />
+      <RechartsTooltip
+        cursor={false}
+        allowEscapeViewBox={{ y: true }}
+        content={({ active, payload }) => (
+          <ChartTooltip
+            active={active}
+            payload={payload}
+            titleFormatter={(payload: any) => payload.date}
           />
-        </StyledBarChart>
-      ) : (
-        <ChartLoader width={160} height={26} data={loaderData} />
-      )}
-    </ResponsiveContainer>
+        )}
+      />
+    </StyledBarChart>
+  ) : (
+    <ChartLoader width={160} height={26} data={loaderData} />
   );
 };
 
