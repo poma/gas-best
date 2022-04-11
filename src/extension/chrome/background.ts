@@ -72,6 +72,7 @@ async function setAlarm() {
 }
 
 chrome.action.setBadgeBackgroundColor({ color: "#21222D" });
+chrome.runtime.onStartup.addListener(() => requestBaseFee());
 
 requestBaseFee();
 subscribe();

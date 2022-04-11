@@ -59,6 +59,7 @@ function requestBaseFee() {
 }
 
 browser.browserAction.setBadgeBackgroundColor({ color: "#21222D" });
+browser.runtime.onStartup.addListener(() => requestBaseFee());
 
 requestBaseFee();
 subscribe();
