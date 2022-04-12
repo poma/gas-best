@@ -201,14 +201,14 @@ jobs:
       - name: Create zip
         run: cd gas-best-chrome && zip -r ../gas-best-chrome.zip .
 
-      # - name: Upload to Chrome store
-      #   uses: trmcnvn/chrome-addon@v2
-      #   with:
-      #     extension: ofnhnnijgkcemfdolboenkinolhiciih
-      #     zip: gas-best-chrome.zip
-      #     client-id: ${{ secrets.CHROME_CLIENT_ID }}
-      #     client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
-      #     refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
+      - name: Upload to Chrome store
+        uses: trmcnvn/chrome-addon@v2
+        with:
+          extension: ofnhnnijgkcemfdolboenkinolhiciih
+          zip: gas-best-chrome.zip
+          client-id: ${{ secrets.CHROME_CLIENT_ID }}
+          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
 
       - name: Telegram Failure Notification
         uses: appleboy/telegram-action@v0.1.1
@@ -223,7 +223,6 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     needs: [publish-docker, publish-firefox, publish-chrome]
-    if: github.ref == 'refs/heads/stable'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -257,7 +256,7 @@ jobs:
       - name: Telegram Notification
         uses: appleboy/telegram-action@v0.1.1
         with:
-          message: 🚀 Published a [${{ steps.vars.outputs.repo_name }}](https://github.com/${{ github.repository }}) version ${{ steps.vars.outputs.version }} to [GitHub registry](https://github.com/${{ github.repository }}/pkgs/container/${{ steps.vars.outputs.repo_name }}), [Firefox](https://addons.mozilla.org/en-US/firefox/addon/gasbest/), and [Chrome](https://chrome.google.com/webstore/detail/gasbest/ofnhnnijgkcemfdolboenkinolhiciih)${{steps.changelog.outputs.changelog}}
+          message: 🚀 Published a [${{ steps.vars.outputs.repo_name }}](https://github.com/${{ github.repository }}) version ${{ steps.vars.outputs.version }} to [GitHub registry](https://github.com/${{ github.repository }}/pkgs/container/${{ steps.vars.outputs.repo_name }}), [Firefox](https://addons.mozilla.org/en-US/firefox/addon/gasbest/), and [Chrome](https://chrome.google.com/webstore/detail/gasbest-gas-price-tracker/ofnhnnijgkcemfdolboenkinolhiciih)${{steps.changelog.outputs.changelog}}
           format: markdown
           disable_web_page_preview: true
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
