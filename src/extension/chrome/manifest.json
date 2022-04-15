@@ -1,6 +1,6 @@
 {
   "name": "GasBest Gas Price Tracker",
-  "description": "GasBest Gas Price Tracker",
+  "description": "Ethereum gas price extension with EIP-1559 support, fast updates, price prediction, and historical fee charts",
   "version": "0.0.0",
   "manifest_version": 3,
   "icons": {
