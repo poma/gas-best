@@ -1,7 +1,7 @@
+import { API_BASE_URL } from "~/config";
 import { BaseFee, ChartDuration, GasPriceHistoryData, FeeStats } from "~/types";
 import subscribe from "~/utils/subscribe";
 
-const BASE_URL = process.env.REACT_APP_API_HTTP_ENDPOINT || "";
 const DURATION_ENDPOINTS: Record<ChartDuration, string> = {
   "1d": "day",
   "1w": "week",
@@ -9,7 +9,7 @@ const DURATION_ENDPOINTS: Record<ChartDuration, string> = {
 };
 
 export async function fetchBaseFee(): Promise<BaseFee> {
-  const res = await fetch(`${BASE_URL}/basefee`);
+  const res = await fetch(`${API_BASE_URL}/basefee`);
   const body = await res.text();
   if (!res.ok) {
     throw new Error(body);
@@ -18,7 +18,7 @@ export async function fetchBaseFee(): Promise<BaseFee> {
 }
 
 export async function fetchFeeStats(): Promise<FeeStats> {
-  const res = await fetch(`${BASE_URL}/stats`);
+  const res = await fetch(`${API_BASE_URL}/stats`);
   const body = await res.json();
   if (!res.ok) {
     throw new Error(body);
@@ -29,7 +29,7 @@ export async function fetchFeeStats(): Promise<FeeStats> {
 export async function fetchGasPriceHistory(
   duration: ChartDuration
 ): Promise<GasPriceHistoryData> {
-  const res = await fetch(`${BASE_URL}/graph/${DURATION_ENDPOINTS[duration]}`);
+  const res = await fetch(`${API_BASE_URL}/graph/${DURATION_ENDPOINTS[duration]}`);
   const body = await res.json();
   if (!res.ok) {
     throw new Error(body);
@@ -46,7 +46,7 @@ export function subscribeToBaseFee(
   onRetry: () => void
 ) {
   return subscribe(
-    `${BASE_URL}/poll/basefee`,
+    `${API_BASE_URL}/poll/basefee`,
     (res) =>
       res
         .text()
@@ -64,7 +64,7 @@ export function subscribeToFeeStats(
   onRetry: () => void
 ) {
   return subscribe(
-    `${BASE_URL}/poll/stats`,
+    `${API_BASE_URL}/poll/stats`,
     (res) =>
       res
         .json()

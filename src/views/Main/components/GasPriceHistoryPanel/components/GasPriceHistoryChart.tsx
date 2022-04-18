@@ -15,13 +15,13 @@ import ChartLoader from "~/components/ChartLoader";
 import { ChartTooltip } from "~/components/ChartTooltip";
 import { GasPriceHistoryChartDataEntry } from "~/types";
 
-interface GasPriceHistoryChartProps {
-  history?: GasPriceHistoryChartDataEntry[];
-}
-
 const DOT_RADIUS = 2;
 const GRAPH_CUTOFF_POINTS = 3;
 const GRAPH_CUTOFF_FACTOR = 1.5;
+
+interface GasPriceHistoryChartProps {
+  history?: GasPriceHistoryChartDataEntry[];
+}
 
 const defaultData: GasPriceHistoryChartDataEntry[] = new Array(150).fill({
   date: "",

@@ -9,13 +9,12 @@ import {
 import { useClickAway, useLocalStorage, usePermission } from "react-use";
 import { rgba } from "polished";
 import styled from "styled-components";
+import { IS_EXTENSION } from "~/config";
 import useFeeNotificationSetting from "~/hooks/useFeeNotificationSettings";
 import useModal from "~/hooks/useModal";
 import Modal from "./Modal";
 import Panel from "./Panel";
 import Text from "./Text";
-
-const isExt = !!process.env.REACT_APP_EXTENSION;
 
 const Content = styled(Panel)`
   display: flex;
@@ -205,7 +204,7 @@ const NotificationModal: React.FC = () => {
     const isPrompt = formSubmitted && permission === "prompt";
     const isDenied = permission === "denied";
 
-    if (!isExt && (isPrompt || isDenied)) {
+    if (!IS_EXTENSION && (isPrompt || isDenied)) {
       return (
         <Text variant="warning" style={{ paddingTop: 8 }}>
           Please allow browser notifications

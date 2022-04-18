@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
-
-const isExt = !!process.env.REACT_APP_EXTENSION;
+import { IS_EXTENSION } from "~/config";
 
 const Wrapper = styled.div`
   max-width: 420px;
@@ -11,7 +10,7 @@ const Wrapper = styled.div`
   border-radius: 24px;
 
   ${() =>
-    isExt &&
+    IS_EXTENSION &&
     css`
       margin: 0;
       border-radius: 0;

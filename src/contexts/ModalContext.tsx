@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { noop } from "~/utils/functions";
 
 type Modal = "notification" | "none";
 
@@ -10,8 +11,8 @@ interface ModalContextAPI {
 
 export const ModalContext = React.createContext<ModalContextAPI>({
   modal: "none",
-  openModal: () => {},
-  closeModal: () => {},
+  openModal: noop,
+  closeModal: noop,
 });
 
 export const ModalContextProvider: React.FC = ({ children }) => {

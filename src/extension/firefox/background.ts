@@ -1,12 +1,10 @@
 import browser from "webextension-polyfill";
+import {
+  NOTIFICATION_INTERVAL_MS,
+  REQUEST_INTERVAL_MS,
+  USE_LONG_POLL,
+} from "~/config";
 import { fetchBaseFee, subscribeToBaseFee } from "~/services/api";
-
-const USE_LONG_POLL = !!Number(process.env.REACT_APP_USE_LONG_POLL || 0);
-const REQUEST_INTERVAL_MS = Number(
-  process.env.REACT_APP_REQUEST_INTERVAL || 3000 // 3 seconds
-);
-const NOTIFICATION_INTERVAL_MS =
-  Number(process.env.REACT_APP_NOTIFICATION_INTERVAL_MINUTES || 60) * 60 * 1000; // 1 hour
 
 async function subscribe() {
   if (USE_LONG_POLL) {

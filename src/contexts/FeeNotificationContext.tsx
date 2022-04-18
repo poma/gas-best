@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useLocalStorage, usePermission } from "react-use";
+import { IS_EXTENSION } from "~/config";
 import { FeeNotificationSettings } from "~/types";
+import { noop } from "~/utils/functions";
 
 interface FeeNotificationContextAPI {
   notification: FeeNotificationSettings;
@@ -12,10 +14,7 @@ interface FeeNotificationContextAPI {
   updateLastNotificationTime: () => void;
 }
 
-const isExt = !!process.env.REACT_APP_EXTENSION;
-
 const initialState: FeeNotificationSettings = { target: null, once: false };
-const noop = () => {};
 
 export const FeeNotificationContext =
   React.createContext<FeeNotificationContextAPI>({
@@ -116,6 +115,6 @@ export const FeeNotificationContextProviderExt: React.FC = ({ children }) => {
   );
 };
 
-export const FeeNotificationContextProvider = isExt
+export const FeeNotificationContextProvider = IS_EXTENSION
   ? FeeNotificationContextProviderExt
   : FeeNotificationContextProviderWeb;

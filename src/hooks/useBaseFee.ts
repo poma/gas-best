@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTimeoutFn } from "react-use";
+import { REQUEST_INTERVAL_MS } from "~/config";
 import { fetchBaseFee, subscribeToBaseFee } from "~/services/api";
 import { BaseFee } from "~/types";
-
-const REQUEST_INTERVAL_MS = Number(
-  process.env.REACT_APP_REQUEST_INTERVAL || 3000
-);
 
 function useIntervalBaseFee() {
   const [data, setData] = useState<BaseFee>();

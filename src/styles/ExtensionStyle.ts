@@ -1,10 +1,9 @@
 import { createGlobalStyle, css } from "styled-components";
-
-const isExt = !!process.env.REACT_APP_EXTENSION;
+import { IS_EXTENSION } from "~/config";
 
 const ExtensionStyle = createGlobalStyle`
   ${() => {
-    if (isExt) {
+    if (IS_EXTENSION) {
       return css`
         body,
         html {

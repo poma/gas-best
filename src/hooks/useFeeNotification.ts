@@ -1,11 +1,9 @@
 import { useEffect } from "react";
 import { usePermission } from "react-use";
+import { IS_EXTENSION, NOTIFICATION_INTERVAL_MS } from "~/config";
+import { noop } from "~/utils/functions";
 import useFeeNotificationSetting from "./useFeeNotificationSettings";
 import { BaseFee } from "~/types";
-
-const isExt = !!process.env.REACT_APP_EXTENSION;
-const NOTIFICATION_INTERVAL_MS =
-  Number(process.env.REACT_APP_NOTIFICATION_INTERVAL_MINUTES || 60) * 60 * 1000; // 1 hour
 
 function useFeeNotification(currentFee: BaseFee | undefined) {
   const {
@@ -59,4 +57,4 @@ function useFeeNotification(currentFee: BaseFee | undefined) {
 }
 
 // Remove in extension
-export default !isExt ? useFeeNotification : () => {};
+export default !IS_EXTENSION ? useFeeNotification : noop;
