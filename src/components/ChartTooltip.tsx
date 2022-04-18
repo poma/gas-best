@@ -1,15 +1,19 @@
 import { ReactNode } from "react";
-import type { Payload } from "recharts/types/component/DefaultTooltipContent";
+import type {
+  NameType,
+  Payload,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 import styled from "styled-components";
 import Tooltip from "./Tooltip";
 
-type ChartTooltipPayload = Payload<string, number>;
+type ChartTooltipPayload = Payload<ValueType, NameType>;
 
 interface ChartTooltipProps {
   active?: boolean;
-  payload?: any;
+  payload?: ChartTooltipPayload[];
   title?: ReactNode;
-  titleFormatter?: (payload: ChartTooltipPayload) => ReactNode;
+  titleFormatter?: (payload: ChartTooltipPayload["payload"]) => ReactNode;
   valueFormatter?: (payload: ChartTooltipPayload) => ReactNode;
 }
 
@@ -42,7 +46,7 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
       <ChartTooltipWrapper
         title={title || (titleFormatter && titleFormatter(payload[0].payload))}
       >
-        {payload.map((item: Payload<string, number>) => {
+        {payload.map((item) => {
           const { value, name, color } = item;
           const formattedValue = valueFormatter?.(item) || value;
           return (

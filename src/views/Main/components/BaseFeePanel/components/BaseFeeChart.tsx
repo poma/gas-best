@@ -14,6 +14,15 @@ interface BaseFeeChartProps {
   data: BaseFeeChartDataEntry[];
 }
 
+interface ChartShapeProps {
+  x: number;
+  y: number;
+  height: number;
+  width: number;
+  radius: number;
+  index: number;
+}
+
 const StyledBarChart = styled(BarChart)`
   & .chart-fill {
     transition: opacity 150ms linear;
@@ -68,7 +77,7 @@ const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
         // HACK: remove data update animation
         onAnimationEnd={() => setAnimationDisabled(true)}
         animationDuration={animationDisabled ? 1 : 600}
-        shape={(props: any) => {
+        shape={(props: ChartShapeProps) => {
           const { x, y, height, width, radius, index } = props;
           return (
             <React.Fragment>
@@ -100,7 +109,7 @@ const BaseFeeChart: React.FC<BaseFeeChartProps> = ({ data }) => {
           <ChartTooltip
             active={active}
             payload={payload}
-            titleFormatter={(payload: any) => payload.date}
+            titleFormatter={(payload: BaseFeeChartDataEntry) => payload.date}
           />
         )}
       />

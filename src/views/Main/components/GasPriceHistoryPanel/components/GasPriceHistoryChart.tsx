@@ -186,12 +186,18 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
             // workaround for line order issue
             // https://github.com/recharts/recharts/issues/1241
             payload={[...(payload || [])]}
-            titleFormatter={(payload: any) => payload.date}
-            valueFormatter={(payload: any) =>
-              payload.value > maxY
-                ? `${payload.value} (cropped)`
-                : payload.value
-            }
+            titleFormatter={(payload: GasPriceHistoryChartDataEntry) => {
+              return payload.date;
+            }}
+            valueFormatter={(payload) => {
+              if (payload.value) {
+                return payload.value > maxY
+                  ? `${payload.value} (cropped)`
+                  : payload.value;
+              }
+
+              return "";
+            }}
           />
         )}
       />
