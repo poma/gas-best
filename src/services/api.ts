@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "~/config";
-import { BaseFee, ChartDuration, GasPriceHistoryData, FeeStats } from "~/types";
+import { BaseFee, ChartDuration, FeeHistoryRaw, FeeStats } from "~/types";
 import subscribe from "~/utils/subscribe";
 
 const DURATION_ENDPOINTS: Record<ChartDuration, string> = {
@@ -26,10 +26,12 @@ export async function fetchFeeStats(): Promise<FeeStats> {
   return body;
 }
 
-export async function fetchGasPriceHistory(
+export async function fetchFeeHistory(
   duration: ChartDuration
-): Promise<GasPriceHistoryData> {
-  const res = await fetch(`${API_BASE_URL}/graph/${DURATION_ENDPOINTS[duration]}`);
+): Promise<FeeHistoryRaw> {
+  const res = await fetch(
+    `${API_BASE_URL}/graph/${DURATION_ENDPOINTS[duration]}`
+  );
   const body = await res.json();
   if (!res.ok) {
     throw new Error(body);

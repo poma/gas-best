@@ -3,15 +3,15 @@ import { useLocalStorage } from "react-use";
 import styled from "styled-components";
 import Panel from "~/components/Panel";
 import Text from "~/components/Text";
-import useGasPriceHistory from "~/hooks/useGasPriceHistory";
+import useFeeHistory from "~/hooks/useFeeHistory";
 import { ChartDuration } from "~/types";
-import GasPriceHistoryChart from "./components/GasPriceHistoryChart";
+import FeeHistoryChart from "./components/FeeHistoryChart";
 
 const StyledPanel = styled(Panel)`
   padding-bottom: 8px;
 `;
 
-const GasPriceHistoryLabel = styled(Text)`
+const FeeHistoryLabel = styled(Text)`
   display: block;
   width: 100%;
 `;
@@ -49,18 +49,18 @@ const DurationButton = styled.button<{ selected: boolean }>`
   cursor: pointer;
 `;
 
-const GasPriceHistoryPanel: React.FC = () => {
+const FeeHistoryPanel: React.FC = () => {
   const [duration, setDuration] = useLocalStorage<ChartDuration>(
     "history-chart-duration",
     "1d"
   );
 
-  const { data, error: _ } = useGasPriceHistory(duration ?? "1d");
+  const { data, error: _ } = useFeeHistory(duration ?? "1d");
 
   return (
     <StyledPanel>
       <Header>
-        <GasPriceHistoryLabel>Gas price history</GasPriceHistoryLabel>
+        <FeeHistoryLabel>Gas price history</FeeHistoryLabel>
         <DurationToolbar>
           <DurationButton
             selected={duration === "1d"}
@@ -85,9 +85,9 @@ const GasPriceHistoryPanel: React.FC = () => {
           </DurationButton>
         </DurationToolbar>
       </Header>
-      <GasPriceHistoryChart history={data} />
+      <FeeHistoryChart history={data} />
     </StyledPanel>
   );
 };
 
-export default GasPriceHistoryPanel;
+export default FeeHistoryPanel;

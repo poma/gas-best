@@ -26,18 +26,20 @@ export interface FeeStats {
   ethPrice: number;
 }
 
-export interface GasPriceHistoryData {
+export interface FeeHistoryRaw {
   start: number;
   tick: number;
   min: number[];
   avg: number[];
 }
 
-export interface GasPriceHistoryChartDataEntry {
+export interface FeeHistoryItem {
   date: string;
   min: number;
   avg: number;
 }
+
+export type FeeHistory = FeeHistoryItem[];
 
 export type ChartDuration = "1d" | "1w" | "1m";
 

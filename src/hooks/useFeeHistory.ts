@@ -1,32 +1,23 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useInterval } from "react-use";
-import { fetchGasPriceHistory } from "~/services/api";
-import {
-  ChartDuration,
-  GasPriceHistoryData,
-  GasPriceHistoryChartDataEntry,
-} from "~/types";
+import { fetchFeeHistory } from "~/services/api";
+import { ChartDuration, FeeHistoryRaw, FeeHistory } from "~/types";
 import formatDateTime from "~/utils/formatDateTime";
 
 const UPDATE_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
 const RETRY_INTERVAL_MS = 3000; // 3 seconds
 
-const expandData = (
-  data: GasPriceHistoryData
-): GasPriceHistoryChartDataEntry[] =>
+const expandData = (data: FeeHistoryRaw): FeeHistory =>
   data.min.map((_, index) => ({
     date: formatDateTime(data.start + data.tick * index),
     min: data.min[index],
     avg: data.avg[index],
   }));
 
-type Cache = Record<
-  ChartDuration,
-  { updated: number; data: GasPriceHistoryChartDataEntry[] }
->;
+type Cache = Record<ChartDuration, { updated: number; data: FeeHistory }>;
 
-function useGasPriceHistory(duration: ChartDuration) {
-  const [data, setData] = useState<GasPriceHistoryChartDataEntry[]>();
+function useFeeHistory(duration: ChartDuration) {
+  const [data, setData] = useState<FeeHistory>();
   const [error, setError] = useState<Error>();
   const [timestamp, setTimestamp] = useState(Date.now());
 
@@ -39,7 +30,7 @@ function useGasPriceHistory(duration: ChartDuration) {
   const interval = error ? RETRY_INTERVAL_MS : UPDATE_INTERVAL_MS;
 
   const updateCache = useCallback(
-    (data: GasPriceHistoryChartDataEntry[]) => {
+    (data: FeeHistory) => {
       cache.current[duration].data = data;
       cache.current[duration].updated = Date.now();
       return data;
@@ -56,7 +47,7 @@ function useGasPriceHistory(duration: ChartDuration) {
       !cache.current[duration].data.length ||
       Date.now() - cache.current[duration].updated > UPDATE_INTERVAL_MS
     ) {
-      fetchGasPriceHistory(duration)
+      fetchFeeHistory(duration)
         .then(expandData)
         .then(updateCache)
         .then(setData)
@@ -74,4 +65,4 @@ function useGasPriceHistory(duration: ChartDuration) {
   return { data, error };
 }
 
-export default useGasPriceHistory;
+export default useFeeHistory;

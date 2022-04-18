@@ -13,17 +13,17 @@ import { useTheme } from "styled-components";
 import { mix } from "polished";
 import ChartLoader from "~/components/ChartLoader";
 import { ChartTooltip } from "~/components/ChartTooltip";
-import { GasPriceHistoryChartDataEntry } from "~/types";
+import { FeeHistory, FeeHistoryItem } from "~/types";
 
 const DOT_RADIUS = 2;
 const GRAPH_CUTOFF_POINTS = 3;
 const GRAPH_CUTOFF_FACTOR = 1.5;
 
-interface GasPriceHistoryChartProps {
-  history?: GasPriceHistoryChartDataEntry[];
+interface FeeHistoryChartProps {
+  history?: FeeHistory;
 }
 
-const defaultData: GasPriceHistoryChartDataEntry[] = new Array(150).fill({
+const defaultData: FeeHistory = new Array(150).fill({
   date: "",
   min: 0,
   avg: 0,
@@ -36,9 +36,7 @@ const loaderData = [
   31, 30, 24, 25, 24, 24, 26, 23, 21, 18, 18, 17, 23, 21, 22, 20,
 ];
 
-const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
-  history,
-}) => {
+const FeeHistoryChart: React.FC<FeeHistoryChartProps> = ({ history }) => {
   const theme = useTheme();
   const [data, setData] = useState(defaultData);
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -186,7 +184,7 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
             // workaround for line order issue
             // https://github.com/recharts/recharts/issues/1241
             payload={[...(payload || [])]}
-            titleFormatter={(payload: GasPriceHistoryChartDataEntry) => {
+            titleFormatter={(payload: FeeHistoryItem) => {
               return payload.date;
             }}
             valueFormatter={(payload) => {
@@ -207,4 +205,4 @@ const GasPriceHistoryChart: React.FC<GasPriceHistoryChartProps> = ({
   );
 };
 
-export default GasPriceHistoryChart;
+export default FeeHistoryChart;

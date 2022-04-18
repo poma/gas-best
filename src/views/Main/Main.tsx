@@ -5,7 +5,7 @@ import useFeeNotification from "~/hooks/useFeeNotification";
 import useFeeStats from "~/hooks/useFeeStats";
 import BaseFeePanel from "./components/BaseFeePanel";
 import FeePanel from "./components/FeePanel";
-import GasPriceHistoryPanel from "./components/GasPriceHistoryPanel";
+import FeeHistoryPanel from "./components/FeeHistoryPanel";
 import LastBlockPanel from "./components/LastBlockPanel";
 
 const Body = styled.main`
@@ -83,7 +83,7 @@ function Main() {
         <BaseFeePanel data={feeStats?.recent} />
       </Middle>
       <Bottom>
-        <GasPriceHistoryPanel />
+        <FeeHistoryPanel />
       </Bottom>
     </Body>
   );
