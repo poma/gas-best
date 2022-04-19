@@ -1,3 +1,4 @@
+import { assert, create } from "superstruct";
 import { API_BASE_URL } from "~/config";
 import { BaseFee, ChartDuration, FeeHistoryRaw, FeeStats } from "~/types";
 import subscribe from "~/utils/subscribe";
@@ -11,18 +12,24 @@ const DURATION_ENDPOINTS: Record<ChartDuration, string> = {
 export async function fetchBaseFee(): Promise<BaseFee> {
   const res = await fetch(`${API_BASE_URL}/basefee`);
   const body = await res.text();
+
   if (!res.ok) {
     throw new Error(body);
   }
+
   return parseInt(body, 10);
 }
 
 export async function fetchFeeStats(): Promise<FeeStats> {
   const res = await fetch(`${API_BASE_URL}/stats`);
   const body = await res.json();
+
   if (!res.ok) {
     throw new Error(body);
   }
+
+  assert(body, FeeStats);
+
   return body;
 }
 
@@ -36,6 +43,9 @@ export async function fetchFeeHistory(
   if (!res.ok) {
     throw new Error(body);
   }
+
+  assert(body, FeeHistoryRaw);
+
   return body;
 }
 
@@ -70,6 +80,7 @@ export function subscribeToFeeStats(
     (res) =>
       res
         .json()
+        .then((data) => create(data, FeeStats))
         .then(onData)
         .catch((reason) => console.error("Base fee parsing error:", reason)),
     onError,
