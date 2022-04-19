@@ -10,3 +10,6 @@ export const REQUEST_INTERVAL_MS = Number(
 
 export const NOTIFICATION_INTERVAL_MS =
   Number(process.env.REACT_APP_NOTIFICATION_INTERVAL_MINUTES || 60) * 60 * 1000; // 1 hour
+
+export const EXTENSION_CACHE_MAX_AGE_MS =
+  Number(process.env.REACT_APP_EXTENSION_CACHE_MAX_AGE_SECONDS || 60) * 1000; // 1 minute
