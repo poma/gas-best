@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useLocalStorage, usePermission } from "react-use";
+import { useLocalStorage } from "react-use";
 import { IS_EXTENSION } from "~/config";
 import { FeeNotificationSettings } from "~/types";
 import { noop } from "~/utils/functions";
@@ -28,53 +28,62 @@ export const FeeNotificationContext =
 // Web
 // ======================================
 
-export const FeeNotificationContextProviderWeb: React.FC = ({ children }) => {
-  const [notification, setNotificationInternal, clearNotification] =
-    useLocalStorage<FeeNotificationSettings>("fee-notification");
-  const [
-    lastNotificationTime,
-    setLastNotificationTime,
-    clearLastNotificationTime,
-  ] = useLocalStorage<number>("fee-notification-last");
+const isNotificationSupported = !!window.Notification;
+const Noop: React.FC = ({ children }) => <>{children}</>;
 
-  const updateLastNotificationTime = () => setLastNotificationTime(Date.now());
-  const permission = usePermission({ name: "notifications" });
+export const FeeNotificationContextProviderWeb: React.FC =
+  isNotificationSupported
+    ? ({ children }) => {
+        const [notification, setNotificationInternal, clearNotification] =
+          useLocalStorage<FeeNotificationSettings>("fee-notification");
+        const [
+          lastNotificationTime,
+          setLastNotificationTime,
+          clearLastNotificationTime,
+        ] = useLocalStorage<number>("fee-notification-last");
 
-  const setNotification = useCallback(
-    (settings: FeeNotificationSettings) => {
-      if (permission === "granted") {
-        setNotificationInternal(settings);
-        clearLastNotificationTime();
-      } else if (permission !== "denied") {
-        Notification.requestPermission()
-          .then((status) => {
-            if (status === "granted") {
+        const updateLastNotificationTime = () =>
+          setLastNotificationTime(Date.now());
+
+        const setNotification = useCallback(
+          (settings: FeeNotificationSettings) => {
+            const permission = Notification.permission;
+            if (permission === "granted") {
               setNotificationInternal(settings);
               clearLastNotificationTime();
+            } else if (permission === "denied") {
+              console.info("Notification permission is denied!");
+            } else {
+              Notification.requestPermission()
+                .then((status) => {
+                  if (status === "granted") {
+                    setNotificationInternal(settings);
+                    clearLastNotificationTime();
+                  }
+                })
+                .catch((e) =>
+                  console.info("Notification permission error: ", e)
+                );
             }
-          })
-          .catch((e) => console.info("Notification permission error: ", e));
-      } else {
-        console.info("Notification permission is denied!");
-      }
-    },
-    [permission, setNotificationInternal, clearLastNotificationTime]
-  );
+          },
+          [setNotificationInternal, clearLastNotificationTime]
+        );
 
-  return (
-    <FeeNotificationContext.Provider
-      value={{
-        notification: notification ?? initialState,
-        setNotification,
-        clearNotification,
-        lastNotificationTime,
-        updateLastNotificationTime,
-      }}
-    >
-      {children}
-    </FeeNotificationContext.Provider>
-  );
-};
+        return (
+          <FeeNotificationContext.Provider
+            value={{
+              notification: notification ?? initialState,
+              setNotification,
+              clearNotification,
+              lastNotificationTime,
+              updateLastNotificationTime,
+            }}
+          >
+            {children}
+          </FeeNotificationContext.Provider>
+        );
+      }
+    : Noop;
 
 // Extension
 // ======================================

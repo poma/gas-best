@@ -14,6 +14,8 @@ const titles: Record<Page, string> = {
   main: "Recommended gas prices",
 };
 
+const isNotificationSupported = !!window.Notification;
+
 function App() {
   const [page, _setPage] = useState<Page>("main");
   const { modal, openModal } = useModal();
@@ -42,7 +44,9 @@ function App() {
           title={titles[page]}
           nav={
             <React.Fragment>
-              <NotificationButton onClick={() => openModal("notification")} />
+              {isNotificationSupported && (
+                <NotificationButton onClick={() => openModal("notification")} />
+              )}
             </React.Fragment>
           }
         >

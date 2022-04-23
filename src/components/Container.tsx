@@ -21,6 +21,7 @@ const Header = styled.header`
   display: flex;
   justify-content: space-between;
   flex: 1 0 auto;
+  min-height: 40px;
   padding-bottom: 20px;
 `;
 

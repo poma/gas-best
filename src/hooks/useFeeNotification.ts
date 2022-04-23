@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { usePermission } from "react-use";
 import { IS_EXTENSION, NOTIFICATION_INTERVAL_MS } from "~/config";
 import { noop } from "~/utils/functions";
 import useFeeNotificationSetting from "./useFeeNotificationSettings";
@@ -13,19 +12,14 @@ function useFeeNotification(currentFee: BaseFee | undefined) {
     updateLastNotificationTime,
   } = useFeeNotificationSetting();
 
-  const state = usePermission({ name: "notifications" });
-
   useEffect(() => {
+    const permission = Notification.permission;
+
     if (!notification.target || !currentFee) {
       return;
     }
 
-    if (state === "") {
-      console.info("Loading notifications...");
-      return;
-    }
-
-    if (state !== "granted") {
+    if (permission !== "granted") {
       console.info("Notification permission is not granted!");
       return;
     }
@@ -47,7 +41,6 @@ function useFeeNotification(currentFee: BaseFee | undefined) {
       });
     }
   }, [
-    state,
     currentFee,
     notification,
     clearNotification,
@@ -57,4 +50,6 @@ function useFeeNotification(currentFee: BaseFee | undefined) {
 }
 
 // Remove in extension
-export default !IS_EXTENSION ? useFeeNotification : noop;
+export default !IS_EXTENSION && !!window.Notification
+  ? useFeeNotification
+  : noop;

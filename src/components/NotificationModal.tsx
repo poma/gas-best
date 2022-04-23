@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { useClickAway, useLocalStorage, usePermission } from "react-use";
+import { useClickAway, useLocalStorage } from "react-use";
 import { rgba } from "polished";
 import styled from "styled-components";
 import { IS_EXTENSION } from "~/config";
@@ -162,7 +162,6 @@ const NotificationModal: React.FC = () => {
   const { notification, setNotification, clearNotification } =
     useFeeNotificationSetting();
   const isActive = useMemo(() => !!notification.target, [notification]);
-  const permission = usePermission({ name: "notifications" });
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const [price, setPrice] = useState(
@@ -175,8 +174,10 @@ const NotificationModal: React.FC = () => {
 
   const { closeModal } = useModal();
   const modalRef = useRef(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   useClickAway(modalRef, closeModal);
+
+  const permission = Notification.permission;
 
   const inputHandler = (value: string) => {
     if (isValidInput(value)) {
@@ -201,10 +202,9 @@ const NotificationModal: React.FC = () => {
   useEffect(() => inputRef.current?.focus(), [inputRef]);
 
   const NotificationWarnings = useCallback(() => {
-    const isPrompt = formSubmitted && permission === "prompt";
-    const isDenied = permission === "denied";
+    const isGranted = permission === "granted";
 
-    if (!IS_EXTENSION && (isPrompt || isDenied)) {
+    if (!IS_EXTENSION && !isGranted) {
       return (
         <Text variant="warning" style={{ paddingTop: 8 }}>
           Please allow browser notifications
