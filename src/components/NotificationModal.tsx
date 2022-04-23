@@ -162,7 +162,7 @@ const NotificationModal: React.FC = () => {
   const { notification, setNotification, clearNotification } =
     useFeeNotificationSetting();
   const isActive = useMemo(() => !!notification.target, [notification]);
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formSubmitTimestamp, setFormSubmitTimestamp] = useState<number>();
 
   const [price, setPrice] = useState(
     isActive ? String(notification.target) : ""
@@ -176,8 +176,6 @@ const NotificationModal: React.FC = () => {
   const modalRef = useRef(null);
   const inputRef = useRef<HTMLInputElement>(null);
   useClickAway(modalRef, closeModal);
-
-  const permission = Notification.permission;
 
   const inputHandler = (value: string) => {
     if (isValidInput(value)) {
@@ -193,7 +191,7 @@ const NotificationModal: React.FC = () => {
       } else {
         const parsed = parseInt(price, 10);
         setNotification({ target: parsed, once: !!once });
-        setFormSubmitted(true);
+        setFormSubmitTimestamp(Date.now());
       }
     },
     [isActive, price, once, setNotification, clearNotification]
@@ -202,9 +200,11 @@ const NotificationModal: React.FC = () => {
   useEffect(() => inputRef.current?.focus(), [inputRef]);
 
   const NotificationWarnings = useCallback(() => {
-    const isGranted = permission === "granted";
+    const permission = Notification.permission;
+    const isPrompted = formSubmitTimestamp && permission !== "granted";
+    const isDenied = permission === "denied";
 
-    if (!IS_EXTENSION && !isGranted) {
+    if (!IS_EXTENSION && (isPrompted || isDenied)) {
       return (
         <Text variant="warning" style={{ paddingTop: 8 }}>
           Please allow browser notifications
@@ -213,7 +213,7 @@ const NotificationModal: React.FC = () => {
     }
 
     return null;
-  }, [formSubmitted, permission]);
+  }, [formSubmitTimestamp]);
 
   return (
     <Modal>
