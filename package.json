@@ -1,6 +1,6 @@
 {
   "name": "gas-best",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.4.3",
