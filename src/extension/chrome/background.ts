@@ -70,7 +70,6 @@ async function setAlarm() {
   chrome.alarms.create({ periodInMinutes: 1 });
 }
 
-chrome.action.setBadgeBackgroundColor({ color: "#21222D" });
 chrome.runtime.onStartup.addListener(() => requestBaseFee());
 
 requestBaseFee();
