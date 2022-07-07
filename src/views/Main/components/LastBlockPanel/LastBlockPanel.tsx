@@ -8,6 +8,7 @@ import Text from "~/components/Text";
 
 interface LastBlockPanelProps {
   lastBlockNumber?: number;
+  lastBlockTime?: number;
 }
 
 const LastBlockLabel = styled(Text)`
@@ -34,28 +35,45 @@ const LastBlockStats = styled(Stats)`
   width: 100%;
 `;
 
-const LastBlockPanel: React.FC<LastBlockPanelProps> = ({ lastBlockNumber }) => {
-  const [lastBlockTime, setLastBlockTime] = useState(Date.now());
-  const [timeSinceLastBlock, setTimeSinceLastBlock] = useState(0);
+const LastBlockPanel: React.FC<LastBlockPanelProps> = ({
+  lastBlockNumber,
+  lastBlockTime,
+}) => {
+  const [lastUpdateTime, setLastUpdateTime] = useState<number>();
+  const [timeSinceLastUpdate, setTimeSinceLastUpdate] = useState(NaN);
+  const [lastBlockNumberInitial, setLastBlockNumberInitial] =
+    useState<number>();
+
+  useEffect(() => {
+    if (!lastBlockNumberInitial && lastBlockNumber && lastBlockTime) {
+      setLastBlockNumberInitial(lastBlockNumber);
+      setLastUpdateTime(lastBlockTime);
+    }
+  }, [lastBlockNumberInitial, lastBlockNumber, lastBlockTime]);
 
   useInterval(() => {
-    setTimeSinceLastBlock(Math.floor((Date.now() - lastBlockTime) / 1000));
+    if (lastUpdateTime) {
+      setTimeSinceLastUpdate(Math.floor(Date.now() / 1000 - lastUpdateTime));
+    }
   }, 500);
 
   useEffect(() => {
-    if (lastBlockNumber) {
-      setLastBlockTime(Date.now());
-      setTimeSinceLastBlock(0);
+    const isLocalTimer =
+      lastBlockNumberInitial && lastBlockNumberInitial !== lastBlockNumber;
+
+    if (lastBlockNumber && isLocalTimer) {
+      setLastUpdateTime(Date.now() / 1000);
+      setTimeSinceLastUpdate(0);
     }
-  }, [lastBlockNumber]);
+  }, [lastBlockNumber, lastBlockNumberInitial]);
 
   return (
     <Panel>
       <LastBlockLabel>
         Last block mined{" "}
-        <LastBlockTime highlight={timeSinceLastBlock > 60}>
-          {lastBlockNumber ? (
-            `${timeSinceLastBlock}s`
+        <LastBlockTime highlight={timeSinceLastUpdate > 60}>
+          {!isNaN(timeSinceLastUpdate) ? (
+            `${timeSinceLastUpdate}s`
           ) : (
             <InlineLoader width="2ch" />
           )}

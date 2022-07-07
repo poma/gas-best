@@ -79,7 +79,10 @@ function Main() {
         />
       </Top>
       <Middle>
-        <LastBlockPanel lastBlockNumber={feeStats?.last.number} />
+        <LastBlockPanel
+          lastBlockNumber={feeStats?.last.number}
+          lastBlockTime={feeStats?.last.timestamp}
+        />
         <BaseFeePanel data={feeStats?.recent} />
       </Middle>
       <Bottom>
