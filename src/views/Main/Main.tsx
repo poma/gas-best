@@ -7,6 +7,7 @@ import BaseFeePanel from "./components/BaseFeePanel";
 import FeePanel from "./components/FeePanel";
 import FeeHistoryPanel from "./components/FeeHistoryPanel";
 import LastBlockPanel from "./components/LastBlockPanel";
+import { useFeeInPageTitle } from "~/hooks/useFeeInPageTitle";
 
 const Body = styled.main`
   display: grid;
@@ -31,7 +32,8 @@ function Main() {
   const { data: feeStats, error: _feeStatsError } = useFeeStats();
   const [hidePanelTooltips, setHidePanelTooltips] = useState(false);
 
-  useFeeNotification(feeStats?.pending?.fee);
+  useFeeNotification(feeStats?.pending.fee);
+  useFeeInPageTitle(feeStats?.pending.fee);
 
   return (
     <Body>

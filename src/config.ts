@@ -1,3 +1,5 @@
+export const PAGE_TITLE = "GasBest";
+
 export const API_BASE_URL = process.env.REACT_APP_API_HTTP_ENDPOINT || "";
 
 export const IS_EXTENSION = !!process.env.REACT_APP_EXTENSION;

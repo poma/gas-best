@@ -4,7 +4,7 @@ import { noop } from "~/utils/functions";
 import useFeeNotificationSetting from "./useFeeNotificationSettings";
 import { BaseFee } from "~/types";
 
-function useFeeNotification(currentFee: BaseFee | undefined) {
+function useFeeNotification(currentFee?: BaseFee) {
   const {
     notification,
     clearNotification,
